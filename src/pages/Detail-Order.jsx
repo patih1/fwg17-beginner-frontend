@@ -1,3 +1,5 @@
+import Navbar from "../component/Navbar"
+import Footer from '../component/Footer';
 // import * as Ic from 'react-feather';
 // import { Link } from 'react-router-dom';
 // import Item1 from '../assets/img/card1.png';
@@ -8,13 +10,16 @@
 const DetailOrder = () => {
   return(
     <>
+      <div className='bg-black'>
+      <Navbar/>
+      </div>
 
-    <header className="flex flex-col items-center w-full my-8">
+      <header className="flex flex-col items-center w-full my-8">
       <h2 className="w-4/5 text-2xl md:text-5xl">Order #12354-09893</h2>
       <p className="w-4/5">21 March 2023 at 10:30 AM</p>
-    </header>
+      </header>
   
-    <section className="flex flex-col gap-3 md:flex-row">
+      <section className="flex flex-col gap-3 md:flex-row">
       
       <div className="flex justify-center md:flex-1 md:justify-end">
   
@@ -113,7 +118,9 @@ const DetailOrder = () => {
   
       </div>
       
-    </section>
+      </section>
+
+      <Footer/>
 
     </>
   )

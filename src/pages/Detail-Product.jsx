@@ -1,5 +1,7 @@
+import Footer from '../component/Footer';
 import * as Ic from 'react-feather';
 import { Link } from 'react-router-dom';
+import Navbar from '../component/Navbar';
 import Item1 from '../assets/img/card1.png';
 import Item2 from '../assets/img/card2.png';
 import Item3 from '../assets/img/card3.png';
@@ -8,8 +10,11 @@ import Item4 from '../assets/img/card4.jpeg';
 const DetailProduct = () => {
   return(
     <>
+      <div className='bg-black'>
+      <Navbar/>
+      </div>
 
-  <header className="flex flex-col mt-10 md:flex-row md:mt-0">
+      <header className="flex flex-col mt-10 md:flex-row md:mt-0">
     
     <div className="flex items-center justify-center flex-1">
 
@@ -102,9 +107,9 @@ const DetailProduct = () => {
       </div>
     </div>
   
-  </header>
+      </header>
 
-  <section className="flex flex-col items-center h-auto gap-10 md:mt-0">
+      <section className="flex flex-col items-center h-auto gap-10 md:mt-0">
     <div className="w-4/5">
       <p className="text-3xl md:text-5xl">Recommendation<span className="text-amber-100"> htmlFor You</span></p>
     </div>
@@ -203,7 +208,9 @@ const DetailProduct = () => {
       <button className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
     </div>
 
-  </section>
+      </section>
+
+      <Footer/>
 
     </>
   )

@@ -1,3 +1,5 @@
+import Navbar from "../component/Navbar"
+import Footer from '../component/Footer';
 // import * as Ic from 'react-feather';
 // import { Link } from 'react-router-dom';
 // import Item1 from '../assets/img/card1.png';
@@ -8,12 +10,15 @@
 const Profile = () => {
   return(
     <>
+      <div className='bg-black'>
+      <Navbar/>
+      </div>
 
-  <header className="flex flex-col items-center w-full my-8">
+      <header className="flex flex-col items-center w-full my-8">
     <h2 className="w-4/5 text-5xl">Profile</h2>
-  </header>
+      </header>
 
-  <section className="flex flex-col items-center gap-3 md:flex-row md:items-start">
+      <section className="flex flex-col items-center gap-3 md:flex-row md:items-start">
     
     <div className="flex justify-center w-full md:w-2/6 md:justify-end">
 
@@ -68,7 +73,9 @@ const Profile = () => {
       
     </div>
     
-  </section>
+      </section>
+
+      <Footer/>
 
     </>
   )

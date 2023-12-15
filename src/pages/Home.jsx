@@ -1,12 +1,18 @@
 import * as Ic from 'react-feather';
+import Navbar from '../component/Navbar';
+import Footer from '../component/Footer';
+import Check from '../assets/icon/check.svg'
 // import Logo from '../assets/img/Logo.png';
 // import { Link } from 'react-router-dom';
 
 const Home = () =>{
   return (
     <>
-
-    <header className="flex flex-col-reverse md:flex-row">
+      <div className='md:bg-[rgba(1,1,1,.1)] md:absolute w-full bg-black'>
+    <Navbar/>
+      </div>
+    
+      <header className="flex flex-col-reverse md:flex-row">
       
       <div className="flex-1 min-h-screen bg-gradient-to-b from-[#777c82] to-[#0b0909] flex items-center justify-center">
   
@@ -63,9 +69,9 @@ const Home = () =>{
         </form>
       </div>
     
-    </header>
+      </header>
   
-    <article className="h-[80vh] flex flex-col-reverse md:flex-row">
+      <article className="h-[80vh] flex flex-col-reverse md:flex-row">
   
       <div className="flex justify-center flex-1 md:items-center">
         <div className="flex flex-col w-4/5 gap-10 md:w-3/5 h-2/5 md:h-4/5">
@@ -80,20 +86,20 @@ const Home = () =>{
           </div>
   
           <div className="flex flex-col gap-4">
-            <div className="flex items-center">
-              <img src="../assets/Icon/check.svg" alt=""/>
+            <div className="flex items-center gap-3">
+              <img src={Check} alt=""/>
               <p>High quality beans</p>
             </div>
-            <div className="flex items-center">
-              <img src="../assets/Icon/check.svg" alt=""/>
+            <div className="flex items-center gap-3">
+              <img src={Check} alt=""/>
               <p>Healthy meals, you can request the ingredients</p>
             </div>
-            <div className="flex items-center">
-              <img src="../assets/Icon/check.svg" alt=""/>
+            <div className="flex items-center gap-3">
+              <img src={Check} alt=""/>
               <p>Chat with our staff to get better experience for ordering</p>
             </div>
-            <div className="flex items-center">
-              <img src="../assets/Icon/check.svg" alt=""/>
+            <div className="flex items-center gap-3">
+              <img src={Check} alt=""/>
               <p>Free member card with Link minimum purchase of IDR 200.000.</p>
             </div>
           </div>
@@ -103,9 +109,9 @@ const Home = () =>{
       <div className="flex-1  bg-[url(../assets/img/Article.png)] bg-cover md:block hidden">
       </div>
   
-    </article>
+      </article>
   
-    <section className="flex flex-col md:h-[80vh] h-auto md:mb-0 mb-48 flex items-center mt-20 gap-10">
+      <section className="flex flex-col md:h-[80vh] h-auto md:mb-0 mb-48 flex items-center mt-20 gap-10">
       <div className="flex flex-col items-center gap-8">
         <p className="text-3xl md:text-5xl">Here is People’s <span className="text-[#8E6447]">Favorite</span></p>
         <div className="h-1.5 w-16 bg-[#FF8906]"></div>
@@ -187,9 +193,9 @@ const Home = () =>{
         </div>
   
       </div>
-    </section>
+      </section>
   
-    <section className="flex flex-col md:h-[115vh] h-[70vh] mt-28 items-center mb-5">
+      <section className="flex flex-col md:h-[115vh] h-[70vh] mt-28 items-center mb-5">
       <div>
         <div className="flex flex-col items-center gap-8">
           <p className="text-3xl text-center md:text-5xl"><span className="text-[#8E6447]">Visit Our Store </span>Visit Our Store in the Spot on the Map Below</p>
@@ -202,9 +208,9 @@ const Home = () =>{
   
       </div>
     
-    </section>
+      </section>
   
-    <section className="h-[100vh] md:h-[70vh] flex md:flex-row flex-col bg-gradient-to-b from-[#777c82] to-[#0b0909] text-white">
+      <section className="h-[100vh] md:h-[70vh] flex md:flex-row flex-col bg-gradient-to-b from-[#777c82] to-[#0b0909] text-white">
   
       <div className="flex items-center justify-center w-full mt-4 md:flex-1 md:justify-end md:mt-0 h-1/3 md:h-4/5 md:mt-7">
         <div className="md:w-3/5 md:h-4/5 h-full w-4/5 bg-[url(../assets/img/Testimony.png)] bg-cover"></div>
@@ -240,7 +246,9 @@ const Home = () =>{
         </div>
       </div>
   
-    </section>
+      </section>
+
+      <Footer/>
     
     </>
   )

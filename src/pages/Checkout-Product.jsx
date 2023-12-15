@@ -1,5 +1,7 @@
 import * as Ic from 'react-feather';
 import { Link } from 'react-router-dom';
+import Navbar from '../component/Navbar';
+import Footer from '../component/Footer';
 // import Item1 from '../assets/img/card1.png';
 // import Item2 from '../assets/img/card2.png';
 // import Item3 from '../assets/img/card3.png';
@@ -8,12 +10,15 @@ import { Link } from 'react-router-dom';
 const CheckoutProduct = () => {
   return(
     <>
+      <div className='bg-black'>
+      <Navbar/>
+      </div>
 
-    <header className="flex justify-center w-full my-8">
+      <header className="flex justify-center w-full my-8">
       <h2 className="w-4/5 text-5xl">Payment Details</h2>
-    </header>
+      </header>
   
-    <section className="flex flex-col gap-3 md:flex-row">
+      <section className="flex flex-col gap-3 md:flex-row">
       <div className="flex justify-center flex-1 md:justify-end">
         <div className="w-5/6 md:w-4/5">
     
@@ -149,7 +154,9 @@ const CheckoutProduct = () => {
         </div>
   
       </div>
-    </section>
+      </section>
+
+      <Footer/>
 
     </>
   )

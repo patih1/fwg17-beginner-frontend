@@ -1,5 +1,7 @@
 import * as Ic from 'react-feather';
 import { Link } from 'react-router-dom';
+import Navbar from '../component/Navbar';
+import Footer from '../component/Footer';
 // import Item1 from '../assets/img/card1.png';
 // import Item2 from '../assets/img/card2.png';
 // import Item3 from '../assets/img/card3.png';
@@ -8,15 +10,18 @@ import { Link } from 'react-router-dom';
 const HistoryOrder = () => {
   return(
     <>
+      <div className='bg-black'>
+      <Navbar/>
+      </div>
 
-    <header className="flex justify-center w-full my-8">
+      <header className="flex justify-center w-full my-8">
       <div className="flex items-center w-4/5 gap-10">
         <h2 className="text-5xl">History Order</h2>
         <div className="flex items-center justify-center w-8 h-8 bg-slate-100">2</div>
       </div>
-    </header>
+      </header>
   
-    <section className="flex flex-col gap-3 md:flex-row">
+      <section className="flex flex-col gap-3 md:flex-row">
       <div className="flex flex-1 md:justify-end">
         <div className="flex flex-col gap-5 md:w-4/5">
     
@@ -190,7 +195,9 @@ const HistoryOrder = () => {
         </div>
   
       </div>
-    </section>
+      </section>
+
+      <Footer/>
 
     </>
   )

@@ -5,7 +5,7 @@ const LupaPassword = ()=>{
   return(
     <>
   
-    <section className="flex ">
+      <section className="flex ">
       <div className="h-screen w-1/5 bg-cover bg-[url('../assets/img/lupaPassword.png')] hidden md:block">
           
       </div>
@@ -38,7 +38,7 @@ const LupaPassword = ()=>{
         </form>
         
       </div>
-    </section>
+      </section>
 
     </>
   )

@@ -1,16 +1,21 @@
 import * as Ic from 'react-feather';
 import { Link } from 'react-router-dom';
 import Cp from '../assets/img/MotherDay.png';
+import Navbar from '../component/Navbar';
+import Footer from '../component/Footer';
 
 const Product = ()=>{
   return(
     <>
+      <div className='bg-black'>
+      <Navbar/>
+      </div>
 
-    <header className="flex justify-center items-center h-[40vh] bg-[url(../assets/img/Banner.png)] w-full bg-cover">
+      <header className="flex justify-center items-center h-[40vh] bg-[url(../assets/img/Banner.png)] w-full bg-cover">
       <h1 className="w-4/5 text-5xl text-white">We Provide Good Coffee and Healthy<br/>Meals</h1>
-    </header>
+      </header>
   
-    <section className="flex flex-col items-center gap-8 overflow-hidden mt-7">
+      <section className="flex flex-col items-center gap-8 overflow-hidden mt-7">
       <div className="flex justify-between w-4/5">
         <h3 className="text-5xl">Today <span className="text-[#8E6447]">Promo</span></h3>
         <div className="flex gap-3">
@@ -69,9 +74,9 @@ const Product = ()=>{
         <div className="w-2 h-2 rounded-full bg-slate-500"></div>
         <div className="w-2 h-2 rounded-full bg-slate-500"></div>
       </div>
-    </section>
+      </section>
   
-    <section className="flex flex-col items-center mt-7 gap-7">
+      <section className="flex flex-col items-center mt-7 gap-7">
       <div className="w-4/5 text-5xl">
         Our <span className="text-[#8E6447]">Product</span>
       </div>
@@ -325,10 +330,9 @@ const Product = ()=>{
         </div>
   
       </div>
-    </section>
+      </section>
 
-
-
+      <Footer/>
     </>
   )
 }
