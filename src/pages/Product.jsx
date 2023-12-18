@@ -4,8 +4,28 @@ import Cp from '../assets/img/MotherDay.png';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import ProductCard from '../component/ProductCard';
+import React from 'react';
 
 const Product = ()=>{
+
+  const [data, setData] = React.useState([
+    {
+      name: 'Hazzlenut',
+      price: '20000',
+      discountFrom: '30000',
+      description: 'You can explore the menu that we provide with fun and have their own taste and make your day better.',
+      image: 'url(../assets/img/card1.png)',
+      to: '/detail-product'
+    },{
+      name: 'Mocha',
+      price: '20000',
+      discountFrom: '30000',
+      description: 'A luscious combination of espresso, chocolate, and milk',
+      image: 'url(../assets/img/card2.png)',
+      to: '/detail-product'
+    }
+  ])
+
   return(
     <>
       <div className='bg-black'>
@@ -20,7 +40,7 @@ const Product = ()=>{
       <div className="flex justify-between w-4/5">
         <h3 className="text-5xl">Today <span className="text-[#8E6447]">Promo</span></h3>
         <div className="flex gap-3">
-          <button className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-500"><Ic.ArrowLeft className="text-white"></Ic.ArrowLeft></button>
+          <button className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-300"><Ic.ArrowLeft className="text-white"></Ic.ArrowLeft></button>
           <button className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
         </div>
       </div>
@@ -71,9 +91,9 @@ const Product = ()=>{
   
       <div className="flex items-center w-4/5 gap-3">
         <div className="w-7 h-2 bg-[#FF8906] rounded-full"></div>
-        <div className="w-2 h-2 rounded-full bg-slate-500"></div>
-        <div className="w-2 h-2 rounded-full bg-slate-500"></div>
-        <div className="w-2 h-2 rounded-full bg-slate-500"></div>
+        <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+        <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+        <div className="w-2 h-2 rounded-full bg-slate-300"></div>
       </div>
       </section>
   
@@ -145,26 +165,35 @@ const Product = ()=>{
   
         <div className="w-full md:w-2/3">
   
-          <div className="flex w-10/12 flex-col justify-between h-auto ml-6 gap-[40vh]">
+          <div className="flex flex-col justify-between w-10/12 h-auto ml-6 gap-52 md:gap-72">
   
-            <div className="flex flex-wrap justify-between w-full md:flex-nowrap md:gap-0 gap-72">
+            <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
     
-              <ProductCard image='url(../assets/img/card1.png)' size='360'/>
-              <ProductCard image='url(../assets/img/card2.png)' size='360'/>
+              {data.map((item, index) => (
+                <ProductCard
+                  key={String(index)}
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                  description={item.description}
+                  discountFrom={item.discountFrom}
+                  to={item.to}
+                />
+              ))}
               
             </div>
   
-            <div className="flex flex-wrap justify-between w-full md:flex-nowrap md:gap-0 gap-72">
+            <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
     
-              <ProductCard image='url(../assets/img/card1.png)' size='360'/>   
-              <ProductCard image='url(../assets/img/card2.png)' size='360'/>
+              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card1.png)'/>   
+              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card2.png)'/>
 
             </div>
   
-            <div className="flex flex-wrap justify-between w-full md:flex-nowrap md:gap-0 gap-72">
+            <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
     
-              <ProductCard image='url(../assets/img/card1.png)' size='360'/>   
-              <ProductCard image='url(../assets/img/card2.png)' size='360'/>
+              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card1.png)'/>   
+              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card2.png)'/>
 
             </div>
    

@@ -47,7 +47,7 @@ const Home = () => {
 
         <button className="w-14 h-14 md:w-20 md:h-20 fixed bg-[#FF8906] rounded-full right-10 bottom-10 flex justify-center items-center"><Ic.MessageCircle className="w-5 h-5 md:h-10 md:w-10"></Ic.MessageCircle></button>
 
-        <div id="chat" className="w-72 rounded-xl fixed h-96 bg-white right-10 bottom-32 border border-8 border-white border-t-[#FF8906] flex flex-col gap-4 hidden">
+        <div id="chat" className="w-72 rounded-xl fixed h-96 bg-white right-10 bottom-32 border-8 border-white border-t-[#FF8906] flex flex-col gap-4 hidden">
           <div className="flex items-center gap-3 h-2/12">
             <img className="w-3/12 rounded-full" src="../assets/img/cs.png" alt="" />
             <div className="flex-1">
