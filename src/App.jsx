@@ -1,14 +1,14 @@
 import React from "react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Login from './pages/Login.jsx'
-import LupaPassword from "./pages/Lupa-Password.jsx"
+import LupaPassword from "./pages/LupaPassword.jsx"
 import Register from "./pages/Register.jsx"
 import Home from "./pages/Home.jsx"
 import Product from "./pages/Product.jsx"
-import DetailProduct from "./pages/Detail-Product.jsx"
-import CheckoutProduct from "./pages/Checkout-Product.jsx"
-import DetailOrder from "./pages/Detail-Order.jsx"
-import HistoryOrder from "./pages/History-Order.jsx"
+import DetailProduct from "./pages/DetailProduct.jsx"
+import CheckoutProduct from "./pages/CheckoutProduct.jsx"
+import DetailOrder from "./pages/DetailOrder.jsx"
+import HistoryOrder from "./pages/HistoryOrder.jsx"
 import Profile from "./pages/Profile.jsx"
 
 const router = createBrowserRouter([

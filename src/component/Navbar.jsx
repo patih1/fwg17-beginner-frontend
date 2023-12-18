@@ -1,5 +1,6 @@
 import * as Ic from 'react-feather';
 import { Link } from 'react-router-dom';
+import Logo from '../assets/icon/Logo.svg'
 
 const Navbar = () =>{
   return (
@@ -8,7 +9,7 @@ const Navbar = () =>{
     <div id="navbar" className="flex flex-row w-full h-16 p-4 overflow-hidden text-white bg-black md:bg-[rgba(1,1,1,0)]">
       
       <div className="flex flex-col items-center flex-1 gap-10 md:mx-20 md:flex-row">
-        <Link to="/" className="flex items-center gap-3 font-[Sacramento]"><img src="asset/Icon/Logo.svg" alt=""/>Coffe Shop</Link>
+        <Link to="/" className="flex items-center gap-3 font-[Sacramento]"><img src={Logo} alt=""/>Coffe Shop</Link>
         <Link to="/" className="">Home</Link>
         <Link to="/product" className="">Product</Link>
       </div>
