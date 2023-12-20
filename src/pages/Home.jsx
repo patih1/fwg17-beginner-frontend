@@ -1,11 +1,68 @@
 import * as Ic from 'react-feather';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
-import Check from '../assets/icon/check.svg'
+import Article from '../component/Article';
+import ProductCard from '../component/ProductCard';
+import React from 'react';
+import CsImg from "../assets/img/cs.png"
+import UserImg from "../assets/img/user.png"
 // import Logo from '../assets/img/Logo.png';
 // import { Link } from 'react-router-dom';
 
 const Home = () => {
+
+  
+  const [showChat, setShowChat] = React.useState(false)
+  
+  const [data, setData] = React.useState([
+    {
+      name: 'Hazzlenut',
+      price: '20000',
+      discountFrom: '30000',
+      description: 'A classic Italian coffee with espresso, steamed milk, and foam',
+      image: '../assets/img/card1.png',
+      to: '/detail-product',
+      small: true,
+      flashSale: true
+    },{
+      name: 'Snack',
+      price: '20000',
+      // discountFrom: '30000',
+      description: 'A chicken with chips on the side',
+      image: '../assets/img/card2.png',
+      to: '/detail-product',
+      small: true
+    },{
+      name: 'Mocha',
+      price: '20000',
+      // discountFrom: '30000',
+      description: 'A luscious combination of espresso, chocolate, and milk',
+      image: '../assets/img/card3.png',
+      to: '/detail-product',
+      small: true
+    },{
+      name: 'Kopi Aceh',
+      price: '20000',
+      discountFrom: '30000',
+      description: 'A classic Aceh coffee with espresso, steamed milk, and foam',
+      image: '../assets/img/card1.png',
+      to: '/detail-product',
+      small: true,
+      flashSale: true
+    }
+  ])
+
+  const [point, setPoint] = React.useState([
+    {
+      desc: 'High quality beans'
+    },{
+      desc: 'Healthy meals, you can request the ingredients'
+    },{
+      desc: 'Chat with our staff to get better experience for ordering'
+    },{
+      desc: 'Free member card with a minimum purchase of IDR 200.000.'
+    }
+  ])
 
   return (
     <>
@@ -15,7 +72,7 @@ const Home = () => {
 
       <header className="flex flex-col-reverse md:flex-row">
 
-        <div className="flex-1 min-h-screen bg-gradient-to-b from-[#777c82] to-[#0b0909] flex items-center justify-center">
+        <div className="flex-1 h-screen bg-gradient-to-b from-[#777c82] to-[#0b0909] flex items-center justify-center py-10 md:py-0">
 
           <div className="flex flex-col justify-center w-4/5 gap-10 text-white md:w-3/5 h-4/5">
 
@@ -42,14 +99,14 @@ const Home = () => {
 
         </div>
 
-        <div className="flex-1 bg-[url(../assets/img/Header.png)] bg-cover min-h-screen">
+        <div className="flex-1 bg-[url(../assets/img/Header.png)] bg-cover h-screen">
         </div>
 
-        <button className="w-14 h-14 md:w-20 md:h-20 fixed bg-[#FF8906] rounded-full right-10 bottom-10 flex justify-center items-center"><Ic.MessageCircle className="w-5 h-5 md:h-10 md:w-10"></Ic.MessageCircle></button>
+        <button className="w-14 h-14 md:w-20 md:h-20 fixed bg-[#FF8906] rounded-full right-10 bottom-10 flex justify-center items-center" onClick={()=>setShowChat(!showChat)}><Ic.MessageCircle className="w-5 h-5 md:h-10 md:w-10"></Ic.MessageCircle></button>
 
-        <div id="chat" className="w-72 rounded-xl fixed h-96 bg-white right-10 bottom-32 border-8 border-white border-t-[#FF8906] flex flex-col gap-4 hidden">
+        <div id="chat" className={`${!showChat ? 'hidden' : ''} w-72 rounded-xl fixed h-96 bg-white right-10 bottom-32 border-8 border-white border-t-[#FF8906] flex flex-col gap-4`}>
           <div className="flex items-center gap-3 h-2/12">
-            <img className="w-3/12 rounded-full" src="../assets/img/cs.png" alt="" />
+            <img className="w-3/12 rounded-full" src={CsImg} alt="" />
             <div className="flex-1">
               <p className="font-semibold">Maria Angela</p>
               <p className="text-[#FF8906]">Admin Support</p>
@@ -57,12 +114,12 @@ const Home = () => {
           </div>
           <hr />
           <div className="flex items-center gap-2 text-xs">
-            <img src="../assets/img/cs.png" alt="" className="w-8 h-8 rounded-full" />
+            <img src={CsImg} alt="" className="w-8 h-8 rounded-full" />
             <div className="bg-[#F8F8F8] p-1 rounded-xl">Halo, Ada yang bisa kami bantu?</div>
           </div>
           <div className="flex items-center justify-end gap-2 text-xs">
             <div className="bg-[#F8F8F8] p-1 rounded-xl">Saya kesulitan mencari kopi</div>
-            <img src="../assets/img/user.png" alt="" className="w-8 h-8 rounded-full" />
+            <img src={UserImg} alt="" className="w-8 h-8 rounded-full" />
           </div>
           <form className="flex gap-4 mt-auto">
             <input type="text" name="message" id="message" className="flex-1 pl-3 border rounded-xl h-11" placeholder="Masukan Pesan Anda" />
@@ -72,7 +129,7 @@ const Home = () => {
 
       </header>
 
-      <article className="h-[80vh] flex flex-col-reverse md:flex-row">
+      <article className="md:h-[80vh] flex flex-col-reverse md:flex-row">
 
         <div className="flex justify-center flex-1 md:items-center">
           <div className="flex flex-col w-4/5 gap-10 md:w-3/5 h-2/5 md:h-4/5">
@@ -87,22 +144,12 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
-                <img src={Check} alt="" />
-                <p>High quality beans</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <img src={Check} alt="" />
-                <p>Healthy meals, you can request the ingredients</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <img src={Check} alt="" />
-                <p>Chat with our staff to get better experience for ordering</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <img src={Check} alt="" />
-                <p>Free member card with Link minimum purchase of IDR 200.000.</p>
-              </div>
+            {point.map((item, index) => (
+              <Article
+              key={String(index)}
+              desc={item.desc}
+            />
+          ))}
             </div>
 
           </div>
@@ -112,91 +159,33 @@ const Home = () => {
 
       </article>
 
-      <section className="flex flex-col md:h-[80vh] h-auto md:mb-0 mb-48 flex items-center mt-20 gap-10">
+      <section className="flex flex-col md:h-[80vh] h-auto md:mb-0 mb-48 items-center mt-20 gap-10">
         <div className="flex flex-col items-center gap-8">
           <p className="text-3xl md:text-5xl">Here is People’s <span className="text-[#8E6447]">Favorite</span></p>
           <div className="h-1.5 w-16 bg-[#FF8906]"></div>
           <p className="text-center text-slate-500">Let’s choose and have Link bit taste of poeple’s favorite. It might be yours too!</p>
         </div>
 
-        <div className="flex flex-col md:flex-row w-4/5 h-auto justify-between md:gap-0 gap-[30vh] items-center">
-
-          <div className="bg-[url(../assets/img/card1.png)] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center">
-            <div className="w-11/12 h-5/6 bg-[#F8F8F8] mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly">
-              <div className="w-11/12">
-                <p className="text-2xl font-semibold">Hazelnut Latte</p>
-              </div>
-              <div className="w-11/12">
-                <p>You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-              </div>
-              <div className="w-11/12">
-                <p className="text-2xl text-[#FF8906]">IDR 20.000</p>
-              </div>
-              <div className="w-11/12 h-1/6 flex gap-[5%]">
-                <button className="w-9/12 bg-[#FF8906] rounded">Buy</button>
-                <button className="flex items-center justify-center border rounded border-[#FF8906] w-2/12"><Ic.ShoppingCart className="text-[#FF8906] w-6 h-6"></Ic.ShoppingCart></button>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-[url(../assets/img/card2.png)] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center">
-            <div className="w-11/12 h-5/6 bg-[#F8F8F8] mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly">
-              <div className="w-11/12">
-                <p className="text-2xl font-semibold">Hazelnut Latte</p>
-              </div>
-              <div className="w-11/12">
-                <p>You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-              </div>
-              <div className="w-11/12">
-                <p className="text-2xl text-[#FF8906]">IDR 20.000</p>
-              </div>
-              <div className="w-11/12 h-1/6 flex gap-[5%]">
-                <button className="w-9/12 bg-[#FF8906] rounded">Buy</button>
-                <button className="flex items-center justify-center border rounded border-[#FF8906] w-2/12"><Ic.ShoppingCart className="text-[#FF8906] w-6 h-6"></Ic.ShoppingCart></button>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-[url(../assets/img/card3.png)] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center">
-            <div className="w-11/12 h-5/6 bg-[#F8F8F8] mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly">
-              <div className="w-11/12">
-                <p className="text-2xl font-semibold">Hazelnut Latte</p>
-              </div>
-              <div className="w-11/12">
-                <p>You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-              </div>
-              <div className="w-11/12">
-                <p className="text-2xl text-[#FF8906]">IDR 20.000</p>
-              </div>
-              <div className="w-11/12 h-1/6 flex gap-[5%]">
-                <button className="w-9/12 bg-[#FF8906] rounded">Buy</button>
-                <button className="flex items-center justify-center border rounded border-[#FF8906] w-2/12"><Ic.ShoppingCart className="text-[#FF8906] w-6 h-6"></Ic.ShoppingCart></button>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-[url(../assets/img/card4.jpeg)] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center">
-            <div className="w-11/12 h-5/6 bg-[#F8F8F8] mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly">
-              <div className="w-11/12">
-                <p className="text-2xl font-semibold">Hazelnut Latte</p>
-              </div>
-              <div className="w-11/12">
-                <p>You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-              </div>
-              <div className="w-11/12">
-                <p className="text-2xl text-[#FF8906]">IDR 20.000</p>
-              </div>
-              <div className="w-11/12 h-1/6 flex gap-[5%]">
-                <button className="w-9/12 bg-[#FF8906] rounded">Buy</button>
-                <button className="flex items-center justify-center border rounded border-[#FF8906] w-2/12"><Ic.ShoppingCart className="text-[#FF8906] w-6 h-6"></Ic.ShoppingCart></button>
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col items-center justify-between w-4/5 h-auto gap-52 md:flex-row md:gap-0">
+    
+        {data.map((item, index) => (
+      <ProductCard
+        key={String(index)}
+        image={item.image}
+        name={item.name}
+        price={item.price}
+        description={item.description}
+        discountFrom={item.discountFrom}
+        to={item.to}
+        small={item.small}
+        flashSale={item.flashSale}
+      />
+    ))}
 
         </div>
       </section>
 
-      <section className="flex flex-col md:h-[115vh] h-[70vh] mt-28 items-center mb-5">
+      <section className="flex flex-col md:h-[115vh] h-[50vh] mt-28 items-center mb-5">
         <div>
           <div className="flex flex-col items-center gap-8">
             <p className="text-3xl text-center md:text-5xl"><span className="text-[#8E6447]">Visit Our Store </span>Visit Our Store in the Spot on the Map Below</p>
@@ -211,7 +200,7 @@ const Home = () => {
 
       </section>
 
-      <section className="h-[100vh] md:h-[70vh] flex md:flex-row flex-col bg-gradient-to-b from-[#777c82] to-[#0b0909] text-white">
+      <section className="h-[80vh] md:h-[70vh] flex md:flex-row flex-col bg-gradient-to-b from-[#777c82] to-[#0b0909] text-white">
 
         <div className="flex items-center justify-center w-full mt-4 md:flex-1 md:justify-end md:mt-0 h-1/3 md:h-4/5 md:mt-7">
           <div className="md:w-3/5 md:h-4/5 h-full w-4/5 bg-[url(../assets/img/Testimony.png)] bg-cover"></div>

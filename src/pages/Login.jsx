@@ -1,8 +1,38 @@
 import * as Ic from 'react-feather';
 import Logo from '../assets/img/Logo.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+// import React from 'react';
 
 const Login = ()=>{
+
+  // const inputEmail = React.useRef()
+  // const inputPassword = React.useRef()
+
+  const processLogin = async (event) =>{
+    event.preventDefault()
+    const {value: email} = event.target.email
+    const {value: password} = event.target.password
+
+    // console.log(password)
+
+
+    const form = new URLSearchParams()
+    form.append('email', email)
+    form.append('password', password)
+
+
+    try{
+      const {data} = await axios.post('http://localhost:5050/auth/login', form.toString())
+      // const {token} = data.results
+        window.location = '/'
+        // alert('asdasdas')
+
+    }catch(err){
+      alert(err.response.data.message)
+    }
+  }
+
   return(
     <>
       <section className="flex ">
@@ -10,7 +40,7 @@ const Login = ()=>{
         
     </div>
 
-    <div className="flex flex-col items-center justify-center flex-1 gap-4">
+    <header className="flex flex-col items-center justify-center flex-1 gap-4">
       <div className="w-4/5">  
         <img src={Logo} alt="" className="logo"/>
       </div>
@@ -20,10 +50,10 @@ const Login = ()=>{
         <p className="font-normal text-gray-600">Fill out the form correctly</p>
       </div>
 
-      <p className="hidden w-4/5 text-red-500 bg-slate-200" id="failed">Wrong Email or Password</p>
+      
       <p className="hidden w-4/5 text-green-500 bg-slate-200" id="success">success</p>
       
-      <form className="flex flex-col w-4/5 gap-4" id="form">
+      <form onSubmit={processLogin} className="flex flex-col w-4/5 gap-4" id="form">
 
         <label className="flex flex-col" htmlFor="email">
           <div className="font-semibold">Email</div>
@@ -46,7 +76,7 @@ const Login = ()=>{
         </div>
 
         <div>
-          <button className="w-full bg-[#FF8906] h-10 mt-4 rounded" type="submit"><Link to="/">Log In</Link></button>
+          <button className="w-full bg-[#FF8906] h-10 mt-4 rounded" type="submit"><p>Log In</p></button>
         </div>
 
         
@@ -66,7 +96,7 @@ const Login = ()=>{
       
       </div>
       
-    </div>
+    </header>
       </section>
     </>
   )

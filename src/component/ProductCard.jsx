@@ -4,18 +4,36 @@ import * as Ic from 'react-feather'
 // eslint-disable-next-line react/prop-types
 const ProductCard = ({image, small, to='/detail-product', price='20000', discountFrom, flashSale=false, name='product', description}) => {
   const x = () => {
-    if(flashSale !== false){
-      return <div className="absolute w-32 h-10 bg-[#D00000] md:mb-72 md:mr-72 mb-48 mr-48 ml-20 rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
-    }
-  }
-
-  const size = () =>{
+    let size = ''
 
     if(!small){
-      return 'md:h-[360px] md:w-[360px]'
+      size = 'md:mb-72 md:mr-72'
+    }
+
+    if(flashSale !== false){
+      return <div className={`absolute w-32 h-10 bg-[#D00000] ${size} mb-48 mr-48 ml-20 rounded-full flex items-center justify-center text-white`}>FLASH SALE!</div>
+    }
+  }
+
+  const sizes = () =>{
+
+    if(!small){
+      const data = {
+        size: 'md:h-[360px] md:w-[360px]',
+        font: 'text-2xl'
+      }
+      return data
+    }else if(small){
+      const data = {
+        size: '',
+        font: ''
+      }
+      return data
     }
 
   }
+
+  console.log
 
   const realPrice = () =>{
     if(discountFrom){
@@ -26,11 +44,11 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
   }
 
   return(
-    <Link to={to} className={`bg-[${image}] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${size()}`}>
+    <Link to={to} className={`bg-[url(${image})] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
         {x()}
         
 
-        <div className="w-11/12 h-5/6 mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly py-6 gap-4">
+        <div className="w-11/12 h-5/6 mt-[150%] bg-white flex flex-col items-center shadow-md justify-center py-2 gap-4">
           <div className="w-11/12">
             <p className="text-2xl font-semibold">{name}</p>
           </div>
@@ -43,7 +61,7 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
               {realPrice()}
             </div>
             <div>
-              <p className="md:text-2xl text-xl text-[#FF8906]">{new Intl.NumberFormat("id-ID", {style: "currency",currency: "IDR", maximumSignificantDigits: 10}).format(price)}</p>
+              <p className={`${sizes().font} text-xl text-[#FF8906]`}>{new Intl.NumberFormat("id-ID", {style: "currency",currency: "IDR", maximumSignificantDigits: 10}).format(price)}</p>
             </div>
           </div>
           

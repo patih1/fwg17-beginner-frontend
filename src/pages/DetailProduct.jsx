@@ -1,6 +1,8 @@
 import Footer from '../component/Footer';
 import * as Ic from 'react-feather';
 import { Link } from 'react-router-dom';
+import ProductCard from '../component/ProductCard';
+import React from 'react';
 import Navbar from '../component/Navbar';
 import Item1 from '../assets/img/card1.png';
 import Item2 from '../assets/img/card2.png';
@@ -8,6 +10,31 @@ import Item3 from '../assets/img/card3.png';
 import Item4 from '../assets/img/card4.jpeg';
 
 const DetailProduct = () => {
+  const [data, setData] = React.useState([
+    {
+      name: 'Hazzlenut',
+      price: '20000',
+      discountFrom: '30000',
+      description: 'You can explore the menu that we provide with fun and have their own taste and make your day better.',
+      image: 'url(../assets/img/card1.png)',
+      to: '/detail-product'
+    },{
+      name: 'Mocha',
+      price: '20000',
+      discountFrom: '30000',
+      description: 'A luscious combination of espresso, chocolate, and milk',
+      image: 'url(../assets/img/card1.png)',
+      to: '/detail-product'
+    },{
+      name: 'Snacks',
+      price: '20000',
+      discountFrom: '30000',
+      description: 'A luscious combination of espresso, chocolate, and milk',
+      image: 'url(../assets/img/card1.png)',
+      to: '/detail-product'
+    }
+  ])
+
   return(
     <>
       <div className='bg-black'>
@@ -39,11 +66,11 @@ const DetailProduct = () => {
         </div>
 
         <div className="flex gap-3">
-          <i data-feather="star" className="text-[#FF8906]"></i>
-          <i data-feather="star" className="text-[#FF8906]"></i>
-          <i data-feather="star" className="text-[#FF8906]"></i>
-          <i data-feather="star" className="text-[#FF8906]"></i>
-          <i data-feather="star" className="text-[#FF8906]"></i>
+          <Ic.Star className="text-[#FF8906]"></Ic.Star>
+          <Ic.Star className="text-[#FF8906]"></Ic.Star>
+          <Ic.Star className="text-[#FF8906]"></Ic.Star>
+          <Ic.Star className="text-[#FF8906]"></Ic.Star>
+          <Ic.Star className="text-[#FF8906]"></Ic.Star>
           <p>5.0</p>
         </div>
         
@@ -116,86 +143,17 @@ const DetailProduct = () => {
 
     <div className="flex flex-col items-center justify-between w-4/5 h-auto gap-56 md:flex-row mb-60 md:gap-0">
 
-      <div className="bg-[url(../assets/img/card1.png)] md:h-[360px] md:w-[377px] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center">
-        <div className="absolute w-32 h-10 bg-[#D00000] md:mb-72 md:mr-72 mb-48 mr-48 ml-20 rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
-
-        <div className="w-11/12 h-5/6 bg-slate-100 mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly">
-          <div className="w-11/12">
-            <p className="text-2xl font-semibold">Hazelnut Latte</p>
-          </div>
-          <div className="w-11/12">
-            <p>You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-          </div>
-
-          <div className="flex items-center w-11/12 gap-3">
-            <div>
-              <p className="text-[#D00000] line-through">IDR 20.000</p>
-            </div>
-            <div>
-              <p className="md:text-2xl text-xl text-[#FF8906]">IDR 20.000</p>
-            </div>
-          </div>
-          
-          <div className="w-11/12 h-1/6 flex gap-[5%]">
-            <button className="w-9/12 bg-[#FF8906] rounded">Buy</button>
-            <button className="flex items-center justify-center border rounded border-[#FF8906] w-2/12"><Ic.ShoppingCart className="text-[#FF8906] w-6 h-6"></Ic.ShoppingCart></button>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-[url(../assets/img/card2.png)] md:h-[360px] md:w-[377px] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center">
-        <div className="absolute w-32 h-10 bg-[#D00000] md:mb-72 md:mr-72 mb-48 mr-48 ml-20 rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
-
-        <div className="w-11/12 h-5/6 bg-slate-100 mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly">
-          <div className="w-11/12">
-            <p className="text-2xl font-semibold">Hazelnut Latte</p>
-          </div>
-          <div className="w-11/12">
-            <p>You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-          </div>
-
-          <div className="flex items-center w-11/12 gap-3">
-            <div>
-              <p className="text-[#D00000] line-through">IDR 20.000</p>
-            </div>
-            <div>
-              <p className="md:text-2xl text-xl text-[#FF8906]">IDR 20.000</p>
-            </div>
-          </div>
-
-          <div className="w-11/12 h-1/6 flex gap-[5%]">
-            <button className="w-9/12 bg-[#FF8906] rounded">Buy</button>
-            <button className="flex items-center justify-center border rounded border-[#FF8906] w-2/12"><Ic.ShoppingCart className="text-[#FF8906] w-6 h-6"></Ic.ShoppingCart></button>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-[url(../assets/img/card3.png)] md:h-[360px] md:w-[377px] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center">
-        <div className="absolute w-32 h-10 bg-[#D00000] md:mb-72 md:mr-72 mb-48 mr-48 ml-20 rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
-
-        <div className="w-11/12 h-5/6 bg-slate-100 mt-[150%] bg-white flex flex-col items-center shadow-md justify-evenly">
-          <div className="w-11/12">
-            <p className="text-2xl font-semibold">Hazelnut Latte</p>
-          </div>
-          <div className="w-11/12">
-            <p>You can explore the menu that we provide with fun and have their own taste and make your day better.</p>
-          </div>
-
-          <div className="flex items-center w-11/12 gap-3">
-            <div>
-              <p className="text-[#D00000] line-through">IDR 20.000</p>
-            </div>
-            <div>
-              <p className="md:text-2xl text-xl text-[#FF8906]">IDR 20.000</p>
-            </div>
-          </div>
-
-          <div className="w-11/12 h-1/6 flex gap-[5%]">
-            <button className="w-9/12 bg-[#FF8906] rounded">Buy</button>
-            <button className="flex items-center justify-center border rounded border-[#FF8906] w-2/12"><Ic.ShoppingCart className="text-[#FF8906] w-6 h-6"></Ic.ShoppingCart></button>
-          </div>
-        </div>
-      </div>
+    {data.map((item, index) => (
+                <ProductCard
+                  key={String(index)}
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                  description={item.description}
+                  discountFrom={item.discountFrom}
+                  to={item.to}
+                />
+              ))}
 
     </div>
 

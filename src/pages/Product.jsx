@@ -14,17 +14,19 @@ const Product = ()=>{
       price: '20000',
       discountFrom: '30000',
       description: 'You can explore the menu that we provide with fun and have their own taste and make your day better.',
-      image: 'url(../assets/img/card1.png)',
+      image: '../assets/img/card1.png',
       to: '/detail-product'
     },{
       name: 'Mocha',
       price: '20000',
       discountFrom: '30000',
       description: 'A luscious combination of espresso, chocolate, and milk',
-      image: 'url(../assets/img/card2.png)',
+      image: 'url(../assets/img/card1.png)',
       to: '/detail-product'
     }
   ])
+
+  const [showFilter, setShowFilter] = React.useState(false)
 
   return(
     <>
@@ -105,10 +107,10 @@ const Product = ()=>{
       <div className="flex flex-col items-center w-full md:items-start md:flex-row">
   
         <aside className="flex flex-col w-5/6 gap-4 mb-16 text-white md:w-1/3 md:justify-end md:static md:items-end">
-          <button onClick="revealFilter()" className="md:hidden bg-[#FF8906] flex justify-center h-12 items-center rounded"><i data-feather="filter"></i></button>
-          <form id="filter" className="flex flex-col hidden w-full gap-4 p-6 bg-black md:w-2/3 rounded-xl md:block md:h-auto">
+          <button onClick={()=>setShowFilter(!showFilter)} className="md:hidden bg-[#FF8906] flex justify-center h-12 items-center rounded"><Ic.Filter/></button>
+          <form id="filter" className={`${!showFilter ? 'hidden' : ''} flex flex-col w-full gap-4 p-6 bg-black md:w-2/3 rounded-xl md:block md:h-auto`}>
   
-                <div className="flex flex-wrap justify-between w-full md:gap-0 gap-72">
+                <div className="flex flex-wrap justify-between w-full gap-0 md:gap-0">
                   <p>Filter</p>
                   <button type="reset">Reset Filter</button>
                 </div>
@@ -185,15 +187,33 @@ const Product = ()=>{
   
             <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
     
-              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card1.png)'/>   
-              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card2.png)'/>
+              {data.map((item, index) => (
+                <ProductCard
+                  key={String(index)}
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                  description={item.description}
+                  discountFrom={item.discountFrom}
+                  to={item.to}
+                />
+              ))}
 
             </div>
   
             <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
     
-              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card1.png)'/>   
-              <ProductCard price='10000' nama='Hazzlenut' description='You can explore the menu that we provide with fun and have their own taste and make your day better.' image='url(../assets/img/card2.png)'/>
+              {data.map((item, index) => (
+                <ProductCard
+                  key={String(index)}
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                  description={item.description}
+                  discountFrom={item.discountFrom}
+                  to={item.to}
+                />
+              ))}
 
             </div>
    
