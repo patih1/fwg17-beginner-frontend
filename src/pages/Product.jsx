@@ -4,29 +4,45 @@ import Cp from '../assets/img/MotherDay.png';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import ProductCard from '../component/ProductCard';
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
 
-const Product = ()=>{
-
-  const [data, setData] = React.useState([
-    {
-      name: 'Hazzlenut',
-      price: '20000',
-      discountFrom: '30000',
-      description: 'You can explore the menu that we provide with fun and have their own taste and make your day better.',
-      image: '../assets/img/card1.png',
-      to: '/detail-product'
-    },{
-      name: 'Mocha',
-      price: '20000',
-      discountFrom: '30000',
-      description: 'A luscious combination of espresso, chocolate, and milk',
-      image: 'url(../assets/img/card1.png)',
-      to: '/detail-product'
-    }
-  ])
-
+const Products = ()=>{
   const [showFilter, setShowFilter] = React.useState(false)
+  
+  const [products, setProducts] = React.useState([{}])
+
+  const getProducts = async () =>{
+    const res = await axios.get('http://localhost:5050/products')
+    console.log(res.data.results)
+    setProducts(res.data.results)
+  }
+
+  useEffect(()=>{
+    getProducts()
+    // console.log(products)
+  }, [])
+
+  const [pages, setPages] = React.useState(1)
+
+  const incPage = () =>{
+    setPages(pages+1)
+  }
+
+  const page = async (event) =>{
+    event.preventDefault()
+    const form = new URLSearchParams()
+    form.append('page', pages)
+
+    try{
+    const res = await axios.post(`http://localhost:5050/products?page=${pages}`, form.toString())
+
+    console.log(res)
+    
+    }catch(err){
+      alert(err.response.data.message)
+    }
+  }
 
   return(
     <>
@@ -169,61 +185,28 @@ const Product = ()=>{
   
           <div className="flex flex-col justify-between w-10/12 h-auto ml-6 gap-52 md:gap-72">
   
-            <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
+            <div className="flex flex-wrap justify-center w-full md:justify-between md:gap-y-72 gap-y-52">
     
-              {data.map((item, index) => (
+              {products && products.map((item) => (
                 <ProductCard
-                  key={String(index)}
-                  image={item.image}
+                  key={String(item.id)}
                   name={item.name}
                   price={item.price}
                   description={item.description}
-                  discountFrom={item.discountFrom}
-                  to={item.to}
+                  discountFrom={item.discount}
+                  to={`${item.id}`}
                 />
               ))}
               
             </div>
-  
-            <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
-    
-              {data.map((item, index) => (
-                <ProductCard
-                  key={String(index)}
-                  image={item.image}
-                  name={item.name}
-                  price={item.price}
-                  description={item.description}
-                  discountFrom={item.discountFrom}
-                  to={item.to}
-                />
-              ))}
-
-            </div>
-  
-            <div className="flex flex-wrap justify-center w-full gap-52 md:justify-between md:flex-nowrap md:gap-0">
-    
-              {data.map((item, index) => (
-                <ProductCard
-                  key={String(index)}
-                  image={item.image}
-                  name={item.name}
-                  price={item.price}
-                  description={item.description}
-                  discountFrom={item.discountFrom}
-                  to={item.to}
-                />
-              ))}
-
-            </div>
    
-            <div className="flex justify-center w-full gap-3">
+            <form className="flex justify-center w-full gap-3">
               <button className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
               <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">2</button>
               <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">3</button>
               <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">4</button>
-              <button className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
-            </div>
+              <button onClick={incPage} className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
+            </form>
       
           </div>
   
@@ -237,4 +220,4 @@ const Product = ()=>{
   )
 }
 
-export default Product
+export default Products

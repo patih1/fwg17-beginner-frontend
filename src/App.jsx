@@ -1,10 +1,10 @@
 import React from "react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Login from './pages/Login.jsx'
+import Login from "./pages/login.jsx"
 import LupaPassword from "./pages/LupaPassword.jsx"
 import Register from "./pages/Register.jsx"
 import Home from "./pages/Home.jsx"
-import Product from "./pages/Product.jsx"
+import Products from "./pages/Product.jsx"
 import DetailProduct from "./pages/DetailProduct.jsx"
 import CheckoutProduct from "./pages/CheckoutProduct.jsx"
 import DetailOrder from "./pages/DetailOrder.jsx"
@@ -25,10 +25,10 @@ const router = createBrowserRouter([
     path: '/lupa-password',
     element: <LupaPassword/>
   },{
-    path: '/product',
-    element: <Product/>
+    path: '/products',
+    element: <Products/>
   },{
-    path: '/detail-product',
+    path: 'products/:id',
     element: <DetailProduct/>
   },{
     path: '/checkout-product',

@@ -14,7 +14,7 @@ const Navbar = () =>{
       <div className="flex flex-col items-center flex-1 gap-10 md:mx-20 md:flex-row">
         <Link to="/" className="flex items-center gap-3 font-[Sacramento]"><img src={Logo} alt=""/>Coffe Shop</Link>
         <Link to="/" className="">Home</Link>
-        <Link to="/product" className="">Product</Link>
+        <Link to="/products" className="">Product</Link>
       </div>
   
       <div className="flex flex-col items-center justify-start flex-1 md:justify-end md:mx-20 gap-9 md:flex-row">

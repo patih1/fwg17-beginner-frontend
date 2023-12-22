@@ -41,12 +41,14 @@ const DetailProduct = () => {
       <Navbar/>
       </div>
 
-      <header className="flex flex-col mt-10 md:flex-row md:mt-0">
+      <header className="flex flex-col md:flex-row md:mt-14">
     
-    <div className="flex items-center justify-center flex-1">
+    <div className="flex justify-center flex-1">
 
-      <div className="flex flex-col items-center w-full gap-5 text-white md:h-5/6 md:items-end">
-        <img src={Item1} className="object-cover w-5/6 md:w-8/12 md:h-4/5 h-80"/>
+      <div className="flex flex-col items-center justify-center w-full gap-5 text-white md:justify-start md:h-4/6 md:items-end">
+        <div className='object-contain w-3/4 md:w-4/6 md:h-4/5 h-2/4 bg-slate-50'>
+        <img src={Item1} className="object-cover w-full h-full"/>
+        </div>
         <div className="flex gap-4 md:w-8/12 h-1/3 md:h-1/4">
           <img src={Item2} className="object-cover w-24 h-24 md:w-1/3 md:h-full"/>
           <img src={Item3} className="object-cover w-24 h-24 md:w-1/3 md:h-full"/>
@@ -56,7 +58,7 @@ const DetailProduct = () => {
 
     </div>
 
-    <div className="flex items-center flex-1 h-screen mt-10 bg-cover md:mt-0">
+    <div className="flex items-center flex-1 h-screen -mt-14">
       <div className="flex flex-col w-11/12 gap-5 ml-6 md:w-9/12 h-5/6">
         <div className="w-32 h-10 bg-[#D00000] rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
         <h1 className="text-5xl">Hazelnut Latte</h1>
@@ -136,9 +138,9 @@ const DetailProduct = () => {
   
       </header>
 
-      <section className="flex flex-col items-center h-auto gap-10 md:mt-0">
+      <section className="flex flex-col items-center h-auto gap-10 mt-6 md:-mt-52">
     <div className="w-4/5">
-      <p className="text-3xl md:text-5xl">Recommendation<span className="text-amber-100"> htmlFor You</span></p>
+      <p className="text-3xl md:text-5xl">Recommendation<span className="text-[#8E6447]"> For You</span></p>
     </div>
 
     <div className="flex flex-col items-center justify-between w-4/5 h-auto gap-56 md:flex-row mb-60 md:gap-0">

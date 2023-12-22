@@ -1,8 +1,41 @@
 import * as Ic from 'react-feather';
 import Logo from '../assets/img/Logo.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Register = ()=>{
+
+  const processRegister = async (event) =>{
+    event.preventDefault()
+    const {value: fullName} = event.target.fullName
+    const {value: email} = event.target.email
+    const {value: password} = event.target.password
+    const {value: confirmPassword} = event.target.confirmPassword
+
+    if(password === confirmPassword){
+
+      const form = new URLSearchParams()
+      form.append('fullName', fullName)
+      form.append('email', email)
+      form.append('password', password)
+  
+  
+      try{
+        const {data} = await axios.post('http://localhost:5050/auth/register', form.toString())
+        // const {token} = data.results
+          window.location = '/login'
+          // alert('asdasdas')
+  
+      }catch(err){
+        alert(err.response.data.message)
+      }
+
+    }else{
+      alert("password doesn't match")
+    }
+  }
+
+
   return(
     <>
   
@@ -21,7 +54,7 @@ const Register = ()=>{
           <p className="font-normal text-gray-600">Fill out the form correctly</p>
         </div>
         
-        <form className="flex flex-col w-4/5 gap-4">
+        <form className="flex flex-col w-4/5 gap-4" onSubmit={processRegister}>
           
           <label className="flex flex-col" htmlFor="fullName">
             <div className="font-semibold">Full Name</div>
@@ -47,11 +80,11 @@ const Register = ()=>{
             </div>
           </label>
           
-          <label className="flex flex-col" htmlFor="confirm-password">
+          <label className="flex flex-col" htmlFor="confirmPassword">
             <div className="font-semibold">Confirm Password</div>
             <div className="flex items-center border border-slate-300">
               <Ic.Key className="w-5 ml-4"></Ic.Key>
-              <input className="flex-1 px-3 rounded outline-none h-9" type="password" name="confirm-password" id="confirm-password" placeholder="Enter Your Password Again"/>
+              <input className="flex-1 px-3 rounded outline-none h-9" type="password" name="confirmPassword" id="confirmPassword" placeholder="Enter Your Password Again"/>
             </div>
           </label>
   

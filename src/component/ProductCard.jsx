@@ -44,7 +44,7 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
   }
 
   return(
-    <Link to={to} className={`bg-[url(${image})] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
+    <Link to={to} className={`bg-[url(../assets/img/card1.png)] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
         {x()}
         
 
