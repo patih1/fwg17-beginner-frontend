@@ -11,10 +11,35 @@ const Products = ()=>{
   const [showFilter, setShowFilter] = React.useState(false)
   
   const [products, setProducts] = React.useState([{}])
+  const [pageInfo, setPageInfo] = React.useState(null)
 
-  const getProducts = async () =>{
-    const res = await axios.get('http://localhost:5050/products')
-    console.log(res.data.results)
+  const getProducts = async (page) =>{
+    let res
+    if(page === 'next'){
+      res = await axios.get('http://localhost:5050/products', {params: {
+        page: pageInfo.nextPage
+      }})
+    }else if(page === '1'){
+      res = await axios.get('http://localhost:5050/products', {params: {
+        page: 1
+      }})
+    }else if(page === '2'){
+      res = await axios.get('http://localhost:5050/products', {params: {
+        page: 2
+      }})
+    }else if(page === '3'){
+      res = await axios.get('http://localhost:5050/products', {params: {
+        page: 3
+      }})
+    }else if(page === '4'){
+      res = await axios.get('http://localhost:5050/products', {params: {
+        page: 4
+      }})
+    }else{
+      res = await axios.get('http://localhost:5050/products')
+    }
+
+    setPageInfo(res.data.pageInfo)
     setProducts(res.data.results)
   }
 
@@ -23,26 +48,26 @@ const Products = ()=>{
     // console.log(products)
   }, [])
 
-  const [pages, setPages] = React.useState(1)
+  // const [pages, setPages] = React.useState(1)
 
-  const incPage = () =>{
-    setPages(pages+1)
-  }
+  // const incPage = () =>{
+  //   setPages(pages+1)
+  // }
 
-  const page = async (event) =>{
-    event.preventDefault()
-    const form = new URLSearchParams()
-    form.append('page', pages)
+  // const page = async (event) =>{
+  //   event.preventDefault()
+  //   const form = new URLSearchParams()
+  //   form.append('page', pages)
 
-    try{
-    const res = await axios.post(`http://localhost:5050/products?page=${pages}`, form.toString())
+  //   try{
+  //   const res = await axios.post(`http://localhost:5050/products?page=${pages}`, form.toString())
 
-    console.log(res)
+  //   console.log(res)
     
-    }catch(err){
-      alert(err.response.data.message)
-    }
-  }
+  //   }catch(err){
+  //     alert(err.response.data.message)
+  //   }
+  // }
 
   return(
     <>
@@ -191,7 +216,7 @@ const Products = ()=>{
                 <ProductCard
                   key={String(item.id)}
                   name={item.name}
-                  price={item.price}
+                  price={item.basePrice}
                   description={item.description}
                   discountFrom={item.discount}
                   to={`${item.id}`}
@@ -200,13 +225,13 @@ const Products = ()=>{
               
             </div>
    
-            <form className="flex justify-center w-full gap-3">
-              <button className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
-              <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">2</button>
-              <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">3</button>
-              <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">4</button>
-              <button onClick={incPage} className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
-            </form>
+            <div className="flex justify-center w-full gap-3">
+              <button type='button' onClick={()=>getProducts('1')} className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
+              <button type='button' onClick={()=>getProducts('2')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">2</button>
+              <button type='button' onClick={()=>getProducts('3')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">3</button>
+              <button type='button' onClick={()=>getProducts('4')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">4</button>
+              <button type='button' onClick={()=>getProducts('next')} className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
+            </div>
       
           </div>
   

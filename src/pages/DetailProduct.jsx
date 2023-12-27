@@ -1,8 +1,9 @@
 import Footer from '../component/Footer';
 import * as Ic from 'react-feather';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ProductCard from '../component/ProductCard';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Navbar from '../component/Navbar';
 import Item1 from '../assets/img/card1.png';
 import Item2 from '../assets/img/card2.png';
@@ -10,7 +11,21 @@ import Item3 from '../assets/img/card3.png';
 import Item4 from '../assets/img/card4.jpeg';
 
 const DetailProduct = () => {
-  const [data, setData] = React.useState([
+  const {id} = useParams()
+
+  const [product, setProduct] = useState()
+  const getProduct = async () =>{
+    const res = await axios.get(`http://localhost:5050/products/${id}`) 
+    
+    setProduct(res.data.results)
+  }
+
+  useEffect(() => {
+    getProduct()
+  },[])
+
+
+  const [data, setData] = useState([
     {
       name: 'Hazzlenut',
       price: '20000',
@@ -61,10 +76,10 @@ const DetailProduct = () => {
     <div className="flex items-center flex-1 h-screen -mt-14">
       <div className="flex flex-col w-11/12 gap-5 ml-6 md:w-9/12 h-5/6">
         <div className="w-32 h-10 bg-[#D00000] rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
-        <h1 className="text-5xl">Hazelnut Latte</h1>
+        <h1 className="text-5xl">{product?.name}</h1>
         <div className="flex items-center gap-3">
           <p className="text-[#D00000] line-through text-sm">IDR 10.000</p>
-          <p className="text-xl text-[#FF8906]">IDR 20.000</p>
+          <p className="text-xl text-[#FF8906]">IDR{product?.basePrice.toLocaleString('id')}</p>
         </div>
 
         <div className="flex gap-3">
@@ -81,9 +96,8 @@ const DetailProduct = () => {
           <i data-feather="thumbs-up" className="text-[#FF8906]"></i>
         </div>
 
-        <p>Cold brewing is a method of brewing that combines ground coffee and cool<br/>
-          water and uses time instead of heat to extract the flavor. It is brewed in small<br/>
-          batches and steeped htmlFor as long as 48 hours.
+        <p>
+          {product?.description}
         </p>
 
         <form action="">

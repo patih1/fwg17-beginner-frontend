@@ -28,7 +28,7 @@ const CheckoutProduct = () => {
             <button className="bg-[#FF8906] h-8 px-4 rounded">+ Add Menu</button>
           </div>
   
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 overflow-auto h-[50vh]">
             
             <PaymentDetail/>
             <PaymentDetail/>
