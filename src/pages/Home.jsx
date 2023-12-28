@@ -3,7 +3,8 @@ import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import Article from '../component/Article';
 import ProductCard from '../component/ProductCard';
-import React from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import CsImg from "../assets/img/cs.png"
 import UserImg from "../assets/img/user.png"
 // import Logo from '../assets/img/Logo.png';
@@ -11,48 +12,22 @@ import UserImg from "../assets/img/user.png"
 
 const Home = () => {
 
-  
-  const [showChat, setShowChat] = React.useState(false)
-  
-  const [data, setData] = React.useState([
-    {
-      name: 'Hazzlenut',
-      price: '20000',
-      discountFrom: '30000',
-      description: 'A classic Italian coffee with espresso, steamed milk, and foam',
-      image: '../assets/img/card1.png',
-      to: '/detail-product',
-      small: true,
-      flashSale: true
-    },{
-      name: 'Snack',
-      price: '20000',
-      // discountFrom: '30000',
-      description: 'A chicken with chips on the side',
-      image: '../assets/img/card2.png',
-      to: '/detail-product',
-      small: true
-    },{
-      name: 'Mocha',
-      price: '20000',
-      // discountFrom: '30000',
-      description: 'A luscious combination of espresso, chocolate, and milk',
-      image: '../assets/img/card3.png',
-      to: '/detail-product',
-      small: true
-    },{
-      name: 'Kopi Aceh',
-      price: '20000',
-      discountFrom: '30000',
-      description: 'A classic Aceh coffee with espresso, steamed milk, and foam',
-      image: '../assets/img/card1.png',
-      to: '/detail-product',
-      small: true,
-      flashSale: true
-    }
-  ])
+  const [products, setProducts] = useState()
+  const getProduct = async () =>{
+    const res = await axios.get(`http://localhost:5050/products`, {params: {
+      itemLimit: 4
+    }}) 
+    
+    setProducts(res.data.results)
+  }
 
-  const [point, setPoint] = React.useState([
+  useEffect(() => {
+    getProduct()
+  },[])
+  
+  const [showChat, setShowChat] = useState(false)
+
+  const [point, setPoint] = useState([
     {
       desc: 'High quality beans'
     },{
@@ -168,19 +143,18 @@ const Home = () => {
 
         <div className="flex flex-col items-center justify-between w-4/5 h-auto gap-52 md:flex-row md:gap-0">
     
-        {data.map((item, index) => (
-      <ProductCard
-        key={String(index)}
-        image={item.image}
-        name={item.name}
-        price={item.price}
-        description={item.description}
-        discountFrom={item.discountFrom}
-        to={item.to}
-        small={item.small}
-        flashSale={item.flashSale}
-      />
-    ))}
+          {products && products.map((item) => (
+            <ProductCard
+              key={String(item.id)}
+              name={item.name}
+              price={item.basePrice}
+              description={item.description}
+              discount={item.discount}
+              to={`/detail-product/${item.id}`}
+              image={item.image}
+              small={true}
+            />
+          ))}
 
         </div>
       </section>

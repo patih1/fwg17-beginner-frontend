@@ -2,7 +2,11 @@ import { Link } from "react-router-dom"
 import * as Ic from 'react-feather'
 
 // eslint-disable-next-line react/prop-types
-const ProductCard = ({image, small, to='/detail-product', price='20000', discountFrom, flashSale=false, name='product', description}) => {
+const ProductCard = ({image, small, to='/detail-product', price='20000', discount, flashSale=false, name='product', description}) => {
+  // if(!image){
+  //   image='1701181414676.jpeg'
+  // }
+  
   const x = () => {
     let size = ''
 
@@ -20,7 +24,7 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
     if(!small){
       const data = {
         size: 'md:h-[360px] md:w-[360px]',
-        font: 'text-2xl'
+        font: 'md:text-2xl'
       }
       return data
     }else if(small){
@@ -36,15 +40,17 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
   console.log
 
   const realPrice = () =>{
-    if(discountFrom){
+    if(discount){
+      const realPrice = price
+      price = price - discount
       
-      return <p className="text-[#D00000] line-through">{new Intl.NumberFormat("id-ID", {style: "currency",currency: "IDR", maximumSignificantDigits: 10}).format(discountFrom)}</p>
+      return <p className="text-[#D00000] line-through">IDR{realPrice.toLocaleString('id')}</p>
 
     }
   }
 
   return(
-    <Link to={to} className={`bg-[url(../assets/img/card1.png)] h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
+    <Link to={to} style={image ? {backgroundImage: `url(http://localhost:5050/uploads/products/${image})`} : {backgroundImage: `url(http://localhost:5050/uploads/products/card1.png)`}} className={`h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
         {x()}
         
 
@@ -61,7 +67,7 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
               {realPrice()}
             </div>
             <div>
-              <p className={`${sizes().font} text-xl text-[#FF8906]`}>{new Intl.NumberFormat("id-ID", {style: "currency",currency: "IDR", maximumSignificantDigits: 10}).format(price)}</p>
+              <p className={`${sizes().font} text-xl text-[#FF8906]`}>IDR{price.toLocaleString('id')}</p>
             </div>
           </div>
           

@@ -4,14 +4,14 @@ import Cp from '../assets/img/MotherDay.png';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import ProductCard from '../component/ProductCard';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Products = ()=>{
-  const [showFilter, setShowFilter] = React.useState(false)
+  const [showFilter, setShowFilter] = useState(false)
   
-  const [products, setProducts] = React.useState([{}])
-  const [pageInfo, setPageInfo] = React.useState(null)
+  const [products, setProducts] = useState([{}])
+  const [pageInfo, setPageInfo] = useState(null)
 
   const getProducts = async (page) =>{
     let res
@@ -36,7 +36,9 @@ const Products = ()=>{
         page: 4
       }})
     }else{
-      res = await axios.get('http://localhost:5050/products')
+      res = await axios.get('http://localhost:5050/products', {params: {
+        itemLimit: 6
+      }})
     }
 
     setPageInfo(res.data.pageInfo)
@@ -88,14 +90,14 @@ const Products = ()=>{
         </div>
       </div>
   
-      <div className="flex gap-4 ml-0 ml-auto overflow-hidden md:w-screen md:justify-between md: md:gap-0">
+      <div className="flex gap-4 ml-auto overflow-hidden md:gap-24">
   
         <div className="flex bg-green-300 w-80 rounded-2xl">
           <div className="flex">
             <img src={Cp} alt="" className="object-contain max-h-24"/>
           </div>
           <div className="text-sm">
-            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu htmlFor free!</p>
+            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu for free!</p>
             <p className="">Klaim Kupon</p>
           </div>
         </div>
@@ -105,7 +107,7 @@ const Products = ()=>{
             <img src={Cp} alt="" className="object-contain max-h-24"/>
           </div>
           <div className="text-sm">
-            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu htmlFor free!</p>
+            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu for free!</p>
             <p className="">Klaim Kupon</p>
           </div>
         </div>
@@ -115,7 +117,7 @@ const Products = ()=>{
             <img src={Cp} alt="" className="object-contain max-h-24"/>
           </div>
           <div className="text-sm">
-            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu htmlFor free!</p>
+            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu for free!</p>
             <p className="">Klaim Kupon</p>
           </div>
         </div>
@@ -125,7 +127,7 @@ const Products = ()=>{
             <img src={Cp} alt="" className="object-contain max-h-24"/>
           </div>
           <div className="text-sm">
-            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu htmlFor free!</p>
+            <p><b>HAPPY MOTHER’S DAY!<br/></b>Get one of our favorite menu for free!</p>
             <p className="">Klaim Kupon</p>
           </div>
         </div>
@@ -218,8 +220,9 @@ const Products = ()=>{
                   name={item.name}
                   price={item.basePrice}
                   description={item.description}
-                  discountFrom={item.discount}
-                  to={`${item.id}`}
+                  discount={item.discount}
+                  to={`/detail-product/${item.id}`}
+                  image={item.image}
                 />
               ))}
               

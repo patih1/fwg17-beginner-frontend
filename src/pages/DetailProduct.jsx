@@ -12,43 +12,34 @@ import Item4 from '../assets/img/card4.jpeg';
 
 const DetailProduct = () => {
   const {id} = useParams()
-
-  const [product, setProduct] = useState()
-  const getProduct = async () =>{
-    const res = await axios.get(`http://localhost:5050/products/${id}`) 
+  
+  const [products, setProducts] = useState()
+  const getProducts = async () =>{
+    const res = await axios.get(`http://localhost:5050/products`, {params: {
+      itemLimit: 3
+    }}) 
     
-    setProduct(res.data.results)
+    setProducts(res.data.results)
   }
-
+  
   useEffect(() => {
-    getProduct()
-  },[])
-
-
-  const [data, setData] = useState([
-    {
-      name: 'Hazzlenut',
-      price: '20000',
-      discountFrom: '30000',
-      description: 'You can explore the menu that we provide with fun and have their own taste and make your day better.',
-      image: 'url(../assets/img/card1.png)',
-      to: '/detail-product'
-    },{
-      name: 'Mocha',
-      price: '20000',
-      discountFrom: '30000',
-      description: 'A luscious combination of espresso, chocolate, and milk',
-      image: 'url(../assets/img/card1.png)',
-      to: '/detail-product'
-    },{
-      name: 'Snacks',
-      price: '20000',
-      discountFrom: '30000',
-      description: 'A luscious combination of espresso, chocolate, and milk',
-      image: 'url(../assets/img/card1.png)',
-      to: '/detail-product'
+    getProducts()
+  },[products])
+  
+    const [product, setProduct] = useState()
+    const getProduct = async () =>{
+      const res = await axios.get(`http://localhost:5050/products/${id}`) 
+      
+      setProduct(res.data.results)
     }
-  ])
+  
+    useEffect(() => {
+      getProduct()
+    },[products])
+  
+    useEffect(() => {
+      getProduct()
+    },[])
 
   return(
     <>
@@ -62,7 +53,7 @@ const DetailProduct = () => {
 
       <div className="flex flex-col items-center justify-center w-full gap-5 text-white md:justify-start md:h-4/6 md:items-end">
         <div className='object-contain w-3/4 md:w-4/6 md:h-4/5 h-2/4 bg-slate-50'>
-        <img src={Item1} className="object-cover w-full h-full"/>
+        <img src={product?.image ? `http://localhost:5050/uploads/products/${product?.image}` : Item1} className="object-cover w-full h-full"/>
         </div>
         <div className="flex gap-4 md:w-8/12 h-1/3 md:h-1/4">
           <img src={Item2} className="object-cover w-24 h-24 md:w-1/3 md:h-full"/>
@@ -158,18 +149,18 @@ const DetailProduct = () => {
     </div>
 
     <div className="flex flex-col items-center justify-between w-4/5 h-auto gap-56 md:flex-row mb-60 md:gap-0">
-
-    {data.map((item, index) => (
-                <ProductCard
-                  key={String(index)}
-                  image={item.image}
-                  name={item.name}
-                  price={item.price}
-                  description={item.description}
-                  discountFrom={item.discountFrom}
-                  to={item.to}
-                />
-              ))}
+    
+      {products && products.map((item) => (
+        <ProductCard
+          key={String(item.id)}
+          name={item.name}
+          price={item.basePrice}
+          description={item.description}
+          discount={item.discount}
+          to={`/detail-product/${item.id}`}
+          image={item.image}
+        />
+      ))}
 
     </div>
 
