@@ -1,13 +1,28 @@
 import * as Ic from 'react-feather';
 import Logo from '../assets/img/Logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // import React from 'react';
+import { login } from '../redux/reducer/auth';
 
 const Login = ()=>{
 
-  // const inputEmail = React.useRef()
-  // const inputPassword = React.useRef()
+  // const [token, setToken] = useState(null)
+  const navigate = useNavigate()
+  const [message, setMessage] = useState('')
+  const [veiwPassword, setViewPassword] = useState(false)
+  const token = useSelector(state => state.auth.token)
+  const dispatch = useDispatch()
+
+  const peek = () =>{
+    if(!veiwPassword){
+      setViewPassword(true)
+    }else{
+      setViewPassword(false)
+    }
+  }
 
   const processLogin = async (event) =>{
     
@@ -24,15 +39,26 @@ const Login = ()=>{
 
 
     try{
-      const {data} = await axios.post('http://localhost:5050/auth/login', form.toString())
-      // const {token} = data.results
-        window.location = '/'
-        // alert('asdasdas')
+        const {data} = await axios.post('http://localhost:5050/auth/login', form.toString())
+        const {token : resultToken} = data.result
+        // setToken(resultToken)
+        // window.localStorage.setItem("token", resultToken)
+        dispatch(login(resultToken))
+        setMessage(data.message)
+        // setTimeout(() => {
+        //   navigate('/')
+        // }, 2000)
 
     }catch(err){
-      alert(err.response.data.message)
+      setMessage(err.response.data.message)
     }
   }
+
+  useEffect(()=>{
+    if(token){
+      navigate('/')
+    }
+  },[token, navigate])
 
   return(
     <>
@@ -52,9 +78,10 @@ const Login = ()=>{
       </div>
 
       
-      <p className="hidden w-4/5 text-green-500 bg-slate-200" id="success">success</p>
       
       <form onSubmit={processLogin} className="flex flex-col w-4/5 gap-4" id="form">
+      {token && <p className="text-green-500" id="success">{message}</p>}
+      {!token && <p className="text-red-500" id="success">{message}</p>}
 
         <label className="flex flex-col" htmlFor="email">
           <div className="font-semibold">Email</div>
@@ -68,7 +95,8 @@ const Login = ()=>{
           <div className="font-semibold">Password</div>
           <div className="flex items-center border border-slate-300">
             <Ic.Key className="w-5 ml-4"></Ic.Key>
-            <input className="flex-1 px-3 rounded outline-none h-9" type="password" name="password" id="password" placeholder="Enter Your Password"/>
+            <input className="flex-1 px-3 rounded outline-none h-9" type={!veiwPassword ? 'password' : 'text'} name="password" id="password" placeholder="Enter Your Password"/>
+            <button onClick={peek} className='mr-4' type='button'>{!veiwPassword && <Ic.EyeOff></Ic.EyeOff>} {veiwPassword && <Ic.Eye></Ic.Eye>}</button>
           </div>
         </label>
 

@@ -1,10 +1,36 @@
 import * as Ic from 'react-feather';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icon/Logo.svg'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/reducer/auth';
 
 const Navbar = () =>{
+  const navigate = useNavigate()
   const [showMenu, setShowMenu] = React.useState(false)
+  // const [token, setToken] = useState(window.localStorage.getItem('token'))
+  const [user, setUser] = useState({})
+  const token = useSelector(state => state.auth.token)
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    if(token){
+      axios.get('http://localhost:5050/customer/users', {
+        headers : {
+          'Authorization' : `Bearer ${token}`
+        }
+      }).then(({data})=>{
+        setUser(data.result)
+        console.log(user)
+      }).catch((err)=>{console.log(err)})
+    }
+  },[])
+
+  const onLogout = () =>{
+    dispatch(logout())
+    navigate('/login')
+  }
 
   return (
     <>
@@ -25,8 +51,14 @@ const Navbar = () =>{
             <button onClick={()=>setShowMenu(!showMenu)}><Ic.Menu className="md:hidden"></Ic.Menu></button>
           </div>
         </div>
-        <button className="px-5 py-2 border border-white rounded"><Link to='/login'>Sign In</Link></button>
+        {!token && <>
+          <button className={`px-5 py-2 border border-white rounded`}><Link to='/login'>Sign In</Link></button>
         <button className="border border-[#FF8906] bg-[#FF8906] px-5 py-2 rounded text-black"><Link to='/register'>Sign Up</Link></button>
+        </> }
+
+        {token && <button onClick={onLogout} className="border border-[#FF8906] bg-[#FF8906] px-5 py-2 rounded text-black">Log Out</button>}
+        {token && <Link to='/profile'><button className='overflow-hidden rounded-full'><img className='object-cover w-10 h-10' src={`http://localhost:5050/uploads/users/${user.picture}`}></img></button></Link>}
+
       </div>
     </div>
 

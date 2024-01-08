@@ -4,7 +4,7 @@ import Cp from '../assets/img/MotherDay.png';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import ProductCard from '../component/ProductCard';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Products = ()=>{
@@ -12,32 +12,39 @@ const Products = ()=>{
   
   const [products, setProducts] = useState([{}])
   const [pageInfo, setPageInfo] = useState(null)
+  const [keyword, setKeyword] = useState('')
 
   const getProducts = async (page) =>{
     let res
     if(page === 'next'){
       res = await axios.get('http://localhost:5050/products', {params: {
-        page: pageInfo.nextPage
+        page: pageInfo.nextPage,
+        search: keyword
       }})
     }else if(page === '1'){
       res = await axios.get('http://localhost:5050/products', {params: {
-        page: 1
+        page: 1,
+        search: keyword
       }})
     }else if(page === '2'){
       res = await axios.get('http://localhost:5050/products', {params: {
-        page: 2
+        page: 2,
+        search: keyword
       }})
     }else if(page === '3'){
       res = await axios.get('http://localhost:5050/products', {params: {
-        page: 3
+        page: 3,
+        search: keyword
       }})
     }else if(page === '4'){
       res = await axios.get('http://localhost:5050/products', {params: {
-        page: 4
+        page: 4,
+        search: keyword
       }})
     }else{
       res = await axios.get('http://localhost:5050/products', {params: {
-        itemLimit: 6
+        itemLimit: 6,
+        search: keyword
       }})
     }
 
@@ -45,31 +52,32 @@ const Products = ()=>{
     setProducts(res.data.results)
   }
 
+  const filter = async (event) =>{
+    
+    event.preventDefault()
+    const {value: search} = event.target.search
+    console.log(search)
+
+    setKeyword(search)
+
+    try{
+      const res = await axios.get('http://localhost:5050/products', {params: {
+        search: search
+      }})
+
+      
+    setProducts(res.data.results)
+        
+
+    }catch(err){
+      console.log(err.response.data.message)
+    }
+  }
+
   useEffect(()=>{
     getProducts()
-    // console.log(products)
+    filter()
   }, [])
-
-  // const [pages, setPages] = React.useState(1)
-
-  // const incPage = () =>{
-  //   setPages(pages+1)
-  // }
-
-  // const page = async (event) =>{
-  //   event.preventDefault()
-  //   const form = new URLSearchParams()
-  //   form.append('page', pages)
-
-  //   try{
-  //   const res = await axios.post(`http://localhost:5050/products?page=${pages}`, form.toString())
-
-  //   console.log(res)
-    
-  //   }catch(err){
-  //     alert(err.response.data.message)
-  //   }
-  // }
 
   return(
     <>
@@ -151,7 +159,7 @@ const Products = ()=>{
   
         <aside className="flex flex-col w-5/6 gap-4 mb-16 text-white md:w-1/3 md:justify-end md:static md:items-end">
           <button onClick={()=>setShowFilter(!showFilter)} className="md:hidden bg-[#FF8906] flex justify-center h-12 items-center rounded"><Ic.Filter/></button>
-          <form id="filter" className={`${!showFilter ? 'hidden' : ''} flex flex-col w-full gap-4 p-6 bg-black md:w-2/3 rounded-xl md:block md:h-auto`}>
+          <form onSubmit={filter} id="filter" className={`${!showFilter ? 'hidden' : ''} flex flex-col w-full gap-4 p-6 bg-black md:w-2/3 rounded-xl md:block md:h-auto`}>
   
                 <div className="flex flex-wrap justify-between w-full gap-0 md:gap-0">
                   <p>Filter</p>
@@ -221,6 +229,7 @@ const Products = ()=>{
                   price={item.basePrice}
                   description={item.description}
                   discount={item.discount}
+                  flashSale={item.discount ? true : false}
                   to={`/detail-product/${item.id}`}
                   image={item.image}
                 />

@@ -2,9 +2,20 @@ import * as Ic from 'react-feather';
 import Logo from '../assets/img/Logo.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useState } from 'react';
 
 const Register = ()=>{
+  const [veiwPassword, setViewPassword] = useState(false)
+  const [errMessage, setErrMessage] = useState('')
 
+  const peek = () =>{
+    if(!veiwPassword){
+      setViewPassword(true)
+    }else{
+      setViewPassword(false)
+    }
+  }
+  
   const processRegister = async (event) =>{
     event.preventDefault()
     const {value: fullName} = event.target.fullName
@@ -27,11 +38,11 @@ const Register = ()=>{
           // alert('asdasdas')
   
       }catch(err){
-        alert(err.response.data.message)
+        setErrMessage(err.response.data.message)
       }
 
     }else{
-      alert("password doesn't match")
+      setErrMessage("password doesn't match")
     }
   }
 
@@ -56,6 +67,9 @@ const Register = ()=>{
         
         <form className="flex flex-col w-4/5 gap-4" onSubmit={processRegister}>
           
+          
+      {errMessage && <p className="text-red-500" id="success">{errMessage}</p>}
+
           <label className="flex flex-col" htmlFor="fullName">
             <div className="font-semibold">Full Name</div>
             <div className="flex items-center border border-slate-300">
@@ -76,7 +90,8 @@ const Register = ()=>{
             <div className="font-semibold">Password</div>
             <div className="flex items-center border border-slate-300">
               <Ic.Key className="w-5 ml-4"></Ic.Key>
-              <input className="flex-1 px-3 rounded outline-none h-9" type="password" name="password" id="password" placeholder="Enter Your Password"/>
+              <input className="flex-1 px-3 rounded outline-none h-9" type={!veiwPassword ? 'password' : 'text'} name="password" id="password" placeholder="Enter Your Password"/>
+              <button onClick={peek} className='mr-4' type='button'>{!veiwPassword && <Ic.EyeOff></Ic.EyeOff>} {veiwPassword && <Ic.Eye></Ic.Eye>}</button>
             </div>
           </label>
           
@@ -84,7 +99,8 @@ const Register = ()=>{
             <div className="font-semibold">Confirm Password</div>
             <div className="flex items-center border border-slate-300">
               <Ic.Key className="w-5 ml-4"></Ic.Key>
-              <input className="flex-1 px-3 rounded outline-none h-9" type="password" name="confirmPassword" id="confirmPassword" placeholder="Enter Your Password Again"/>
+              <input className="flex-1 px-3 rounded outline-none h-9" type={!veiwPassword ? 'password' : 'text'} name="confirmPassword" id="confirmPassword" placeholder="Enter Your Password Again"/>
+              <button onClick={peek} className='mr-4' type='button'>{!veiwPassword && <Ic.EyeOff></Ic.EyeOff>} {veiwPassword && <Ic.Eye></Ic.Eye>}</button>
             </div>
           </label>
   

@@ -13,9 +13,10 @@ import UserImg from "../assets/img/user.png"
 const Home = () => {
 
   const [products, setProducts] = useState()
-  const getProduct = async () =>{
+  const getProduct = async () => {
     const res = await axios.get(`http://localhost:5050/products`, {params: {
-      itemLimit: 4
+      itemLimit: 4,
+      recommended: true
     }}) 
     
     setProducts(res.data.results)
@@ -79,7 +80,7 @@ const Home = () => {
 
         <button className="w-14 h-14 md:w-20 md:h-20 fixed bg-[#FF8906] rounded-full right-10 bottom-10 flex justify-center items-center" onClick={()=>setShowChat(!showChat)}><Ic.MessageCircle className="w-5 h-5 md:h-10 md:w-10"></Ic.MessageCircle></button>
 
-        <div id="chat" className={`${!showChat ? 'hidden' : ''} w-72 rounded-xl fixed h-96 bg-white right-10 bottom-32 border-8 border-white border-t-[#FF8906] flex flex-col gap-4`}>
+        <div id="chat" className={`${!showChat ? 'hidden' : ''} w-72 rounded-xl fixed h-96 bg-white right-10 bottom-32 border-8 border-white border-t-[#FF8906] flex flex-col gap-4 overflow-scroll`}>
           <div className="flex items-center gap-3 h-2/12">
             <img className="w-3/12 rounded-full" src={CsImg} alt="" />
             <div className="flex-1">
@@ -96,7 +97,8 @@ const Home = () => {
             <div className="bg-[#F8F8F8] p-1 rounded-xl">Saya kesulitan mencari kopi</div>
             <img src={UserImg} alt="" className="w-8 h-8 rounded-full" />
           </div>
-          <form className="flex gap-4 mt-auto">
+          <div className='mb-14'></div>
+          <form className="fixed flex gap-4 mt-80">
             <input type="text" name="message" id="message" className="flex-1 pl-3 border rounded-xl h-11" placeholder="Masukan Pesan Anda" />
             <button type="submit" name="chat" className="h-11 w-11 flex items-center justify-center bg-[#FF8906] rounded-xl"><Ic.Send></Ic.Send></button>
           </form>
@@ -152,6 +154,7 @@ const Home = () => {
               discount={item.discount}
               to={`/detail-product/${item.id}`}
               image={item.image}
+              flashSale={item.discount ? true : false}
               small={true}
             />
           ))}

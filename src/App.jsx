@@ -1,5 +1,4 @@
 import React from "react"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Login from "./pages/login.jsx"
 import LupaPassword from "./pages/LupaPassword.jsx"
 import Register from "./pages/Register.jsx"
@@ -10,6 +9,12 @@ import CheckoutProduct from "./pages/CheckoutProduct.jsx"
 import DetailOrder from "./pages/DetailOrder.jsx"
 import HistoryOrder from "./pages/HistoryOrder.jsx"
 import Profile from "./pages/Profile.jsx"
+import PrivateRoute from "./component/PrivateRoute.jsx"
+
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { Provider } from "react-redux"
+import store from "./redux/store.js"
 
 const router = createBrowserRouter([
   {
@@ -32,23 +37,25 @@ const router = createBrowserRouter([
     element: <DetailProduct/>
   },{
     path: '/checkout-product',
-    element: <CheckoutProduct/>
+    element: (<PrivateRoute> <CheckoutProduct/> </PrivateRoute>)
   },{
     path: '/detail-order',
-    element: <DetailOrder/>
+    element: (<PrivateRoute> <DetailOrder/> </PrivateRoute>)
   },{
     path: '/history-order',
-    element: <HistoryOrder/>
+    element: (<PrivateRoute> <HistoryOrder/> </PrivateRoute>)
   },{
     path: '/profile',
-    element: <Profile/>
+    element: (<PrivateRoute> <Profile/> </PrivateRoute>)
   }
 ])
 
 function App() {
 
   return (
-    <RouterProvider router={router}/>
+    <Provider store={store}>
+      <RouterProvider router={router}/>
+    </Provider>
   )
 }
 
