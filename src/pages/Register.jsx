@@ -30,7 +30,6 @@ const Register = ()=>{
       form.append('email', email)
       form.append('password', password)
   
-  
       try{
         const {data} = await axios.post('http://localhost:5050/auth/register', form.toString())
         // const {token} = data.results

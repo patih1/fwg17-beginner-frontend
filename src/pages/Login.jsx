@@ -29,7 +29,6 @@ const Login = ()=>{
     event.preventDefault()
     const {value: email} = event.target.email
     const {value: password} = event.target.password
-
     // console.log(password)
 
 

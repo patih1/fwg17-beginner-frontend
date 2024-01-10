@@ -9,9 +9,36 @@ import Item1 from '../assets/img/card1.png';
 import Item2 from '../assets/img/card2.png';
 import Item3 from '../assets/img/card3.png';
 import Item4 from '../assets/img/card4.jpeg';
+import { useDispatch } from 'react-redux';
+import { setProduct as setProductAction } from '../redux/reducer/product';
+
 
 const DetailProduct = () => {
   const {id} = useParams()
+  const [size, setSize] = useState()
+  const [variant, setVariant] = useState()
+  const [quantity, setQuantity] = useState(1)
+  const dispatch = useDispatch()
+
+  const test = (event) =>{
+    event.preventDefault()
+    const {value: size} = event.target.size
+    const {value: variant} = event.target.variant
+
+    const data = {
+      productId: id,
+      name: product.name,
+      price: product.basePrice,
+      discount: product.discount,
+      image: product.image,
+      quantity: quantity,
+      size: size,
+      variant: variant
+    }
+
+    dispatch(setProductAction(data))
+    console.log(data)
+  }
   
   const [products, setProducts] = useState()
   const getProducts = async () =>{
@@ -21,10 +48,6 @@ const DetailProduct = () => {
     
     setProducts(res.data.results)
   }
-  
-  useEffect(() => {
-    getProducts()
-  },[products])
   
     const [product, setProduct] = useState()
     const getProduct = async () =>{
@@ -38,7 +61,7 @@ const DetailProduct = () => {
     },[products])
   
     useEffect(() => {
-      getProduct()
+      getProducts()
     },[])
 
   return(
@@ -69,7 +92,7 @@ const DetailProduct = () => {
         <div className="w-32 h-10 bg-[#D00000] rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
         <h1 className="text-5xl">{product?.name}</h1>
         <div className="flex items-center gap-3">
-          <p className="text-[#D00000] line-through text-sm">IDR 10.000</p>
+          {product?.discount && <p className="text-[#D00000] line-through text-sm">IDR{product?.discount.toLocaleString('id')}</p>}
           <p className="text-xl text-[#FF8906]">IDR{product?.basePrice.toLocaleString('id')}</p>
         </div>
 
@@ -91,28 +114,28 @@ const DetailProduct = () => {
           {product?.description}
         </p>
 
-        <form action="">
+        <form action="" onSubmit={test}>
           <div className="flex">
-            <div className="flex w-6 h-6 items-center justify-center border border-[#FF8906]">-</div>
-            <input type="number" name="quantity" id="quantity" className="w-6"/>
-            <div className="flex w-6 h-6 items-center justify-center border border-[#FF8906] bg-[#FF8906]">+</div>
+            <button onClick={()=>{quantity > 1 ? setQuantity(quantity-1) : setQuantity(1)}} type='button' className="flex w-6 h-6 items-center justify-center border border-[#FF8906]">-</button>
+            <div type="text" value={quantity} name="quantity" id="quantity" className="flex items-center justify-center w-6">{quantity}</div>
+            <button onClick={()=>{setQuantity(quantity+1)}} type='button' className="flex w-6 h-6 items-center justify-center border border-[#FF8906] bg-[#FF8906]">+</button>
           </div>
 
           <div>
             <p>Choose Size</p>
             <div className="flex gap-3">
+                <input type="radio" name="size" id="regular" className="" value='regular'/>
+                <input type="radio" name="size" id="medium" className="hidden" value='medium'/>
+                <input type="radio" name="size" id="large" className="hidden" value='large'/> 
 
-                <label htmlFor="regular" className="flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center">Regular</label>
-                <input type="radio" name="regular" id="regular" className="hidden"/>
+                <button type='button' onClick={()=>{setSize(1)}} className='flex-1'><label className={`${size == 1 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="regular">Regular</label></button>
               
 
-                <label htmlFor="medium" className="flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center">Medium</label>
-                <input type="radio" name="medium" id="medium" className="hidden"/>
+                <button type='button' onClick={()=>{setSize(2)}} className='flex-1'><label className={`${size == 2 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="medium">Medium</label></button>
               
 
-                <label htmlFor="large" className="flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center">Large</label>
-                <input type="radio" name="large" id="large" className="hidden"/>
-                
+                <button type='button' onClick={()=>{setSize(3)}} className='flex-1'><label className={`${size == 3 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="large">Large</label></button>
+
             </div>
           </div>
 
@@ -120,18 +143,18 @@ const DetailProduct = () => {
             <p>Hot/Ice?</p>
             <div className="flex gap-3">
 
-                <label htmlFor="ice" className="flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center">Ice</label>
-                <input type="radio" name="ice" id="ice" className="hidden"/>
+                <button className='flex-1'type='button' onClick={()=>{setVariant(2)}}><label htmlFor="ice" className={`${variant == 2 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`}>Ice</label></button>
+                <button className='flex-1'type='button' onClick={()=>{setVariant(1)}}><label htmlFor="hot" className={`${variant == 1 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`}>Hot</label></button>
               
-                <label htmlFor="hot" className="flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center">Hot</label>
-                <input type="radio" name="hot" id="hot" className="hidden"/>
+                <input type="radio" name="variant" id="ice" value='ice' className="hidden"/>
+                <input type="radio" name="variant" id="hot" value='hot' className="hidden"/>
 
             </div>
           </div>
 
           <div className="flex gap-3">
             <button type="submit" className="flex-1 border border-[#FF8906] mt-10 h-10 bg-[#FF8906] rounded"><Link to="/checkout-product">Buy</Link></button>
-            <button type="submit" className="flex-1 border border-[#FF8906] mt-10 h-10 flex justify-center items-center text-[#FF8906] rounded gap-3"><Ic.ShoppingCart className=""></Ic.ShoppingCart>add to cart</button>
+            <button type='button' className="flex-1 border border-[#FF8906] mt-10 h-10 flex justify-center items-center text-[#FF8906] rounded gap-3"><Ic.ShoppingCart className=""></Ic.ShoppingCart>add to cart</button>
           </div>
 
         </form>

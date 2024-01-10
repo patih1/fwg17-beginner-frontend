@@ -1,4 +1,3 @@
-import React from "react"
 import Login from "./pages/login.jsx"
 import LupaPassword from "./pages/LupaPassword.jsx"
 import Register from "./pages/Register.jsx"
@@ -11,10 +10,11 @@ import HistoryOrder from "./pages/HistoryOrder.jsx"
 import Profile from "./pages/Profile.jsx"
 import PrivateRoute from "./component/PrivateRoute.jsx"
 
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { Provider } from "react-redux"
 import store from "./redux/store.js"
+import { PersistGate } from "redux-persist/integration/react"
+import { persistor } from "./redux/store.js"
 
 const router = createBrowserRouter([
   {
@@ -54,7 +54,9 @@ function App() {
 
   return (
     <Provider store={store}>
-      <RouterProvider router={router}/>
+      <PersistGate persistor={persistor}>
+        <RouterProvider router={router}/>
+      </PersistGate>
     </Provider>
   )
 }

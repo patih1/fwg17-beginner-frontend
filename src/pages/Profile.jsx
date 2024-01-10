@@ -35,7 +35,7 @@ const Profile = () => {
   const updateProfileData = async (e) =>{
     e.preventDefault()
     const form = new FormData()
-    const fields = ['fullName', 'email', 'address', 'phoneNumber']
+    const fields = ['fullName', 'email', 'address', 'phoneNumber', 'password']
     fields.forEach((field)=>{
       if(e.target[field]){
         form.append(field, e.target[field].value)
@@ -46,8 +46,15 @@ const Profile = () => {
       headers : {
         'Content-Type' : 'multipart/form-data',
         'Authorization' : `Bearer ${token}`
-      }})
+      }}) 
+      if(data.result){
+        dispatch(setProfile(data.result))
+      }
   }
+  
+  useEffect(() => {
+    updateProfileData()
+  },[])
 
   const changePicture = (e) =>{
     const pictureUrl = URL.createObjectURL(e.target.files[0])
@@ -99,7 +106,7 @@ const Profile = () => {
           <label htmlFor="picture" className={`${preview ? 'hidden' : ''} bg-[#FF8906] w-full rounded h-10 flex items-center justify-center`}>Upload New Photo</label>
           <div className={`${!preview ? 'hidden' : ''} flex justify-between w-full`}>
             <button type="submit" className={`bg-[#77de62] rounded h-10 flex items-center justify-center w-2/5`}><Ic.Check/> Confirm</button>
-            <button type="button" onClick={()=>{setPreview()}} className={`bg-[#f05d5d] rounded h-10 flex items-center justify-center w-2/5`}><Ic.X/> Cancel</button>
+            <button type="reset" onClick={()=>{setPreview()}} className={`bg-[#f05d5d] rounded h-10 flex items-center justify-center w-2/5`}><Ic.X/> Cancel</button>
           </div>
         </label>
         <p>Since {user.createdAt?.slice(0,-14)}</p>
