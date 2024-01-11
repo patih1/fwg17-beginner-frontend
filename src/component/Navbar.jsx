@@ -5,12 +5,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/reducer/auth';
+import { setProfile } from '../redux/reducer/profile';
 
 const Navbar = () =>{
   const navigate = useNavigate()
   const [showMenu, setShowMenu] = React.useState(false)
   // const [token, setToken] = useState(window.localStorage.getItem('token'))
-  const [user, setUser] = useState({})
+  // const [user, setUser] = useState({})
+  const user = useSelector(state => state.profile.data)
   const token = useSelector(state => state.auth.token)
   const dispatch = useDispatch()
 
@@ -21,8 +23,8 @@ const Navbar = () =>{
           'Authorization' : `Bearer ${token}`
         }
       }).then(({data})=>{
-        setUser(data.result)
-        console.log(user)
+        dispatch(setProfile(data.result))
+        
       }).catch((err)=>{console.log(err)})
     }
   },[])
@@ -47,7 +49,7 @@ const Navbar = () =>{
         <div className="flex flex-col-reverse gap-14 md:flex-row">
           <Ic.Search className=""></Ic.Search>
           <div className="flex gap-10">
-            <Ic.ShoppingCart></Ic.ShoppingCart>
+            <Link to='/checkout-product'><Ic.ShoppingCart/></Link>
             <button onClick={()=>setShowMenu(!showMenu)}><Ic.Menu className="md:hidden"></Ic.Menu></button>
           </div>
         </div>
@@ -57,7 +59,7 @@ const Navbar = () =>{
         </> }
 
         {token && <button onClick={onLogout} className="border border-[#FF8906] bg-[#FF8906] px-5 py-2 rounded text-black">Log Out</button>}
-        {token && <Link to='/profile'><button className='overflow-hidden rounded-full'><img className='object-cover w-10 h-10' src={`http://localhost:5050/uploads/users/${user.picture}`}></img></button></Link>}
+        {token && <Link to='/profile'><button className='overflow-hidden rounded-full'><img className='object-cover w-10 h-10' src={user.picture? `http://localhost:5050/uploads/users/${user?.picture}` : 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'}></img></button></Link>}
 
       </div>
     </div>

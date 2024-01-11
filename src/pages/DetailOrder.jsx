@@ -1,6 +1,10 @@
 import Navbar from "../component/Navbar"
 import Footer from '../component/Footer';
 import OrderDetail from "../component/OrderDetail";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 // import * as Ic from 'react-feather';
 // import { Link } from 'react-router-dom';
 // import Item1 from '../assets/img/card1.png';
@@ -9,14 +13,37 @@ import OrderDetail from "../component/OrderDetail";
 // import Item4 from '../assets/img/card4.jpeg';
 
 const DetailOrder = () => {
+  const [order, setOrder] = useState()
+  const token = useSelector(state => state.auth.token)
+  const {id} = useParams()
+  
+  useEffect(()=>{
+    if(token){
+      axios.get(`http://localhost:5050/customer/orderDetails/${id}`, {
+        headers : {
+          'Authorization' : `Bearer ${token}`
+        }
+      }).then(({data})=>{
+       setOrder(data.results)
+        
+      }).catch((err)=>{console.log(err)})
+    }
+  },[id, token])
+
+  const debug = () => {
+    console.log(id)
+  }
+
   return(
     <>
       <div className='bg-black'>
       <Navbar/>
       </div>
 
+      {/* <button onClick={debug}>asdasdasdasd</button> */}
+
       <header className="flex flex-col items-center w-full my-8">
-      <h2 className="w-4/5 text-2xl md:text-5xl">Order #12354-09893</h2>
+      <h2 className="w-4/5 text-2xl md:text-5xl">Order {order && order.map((item)=>(<>{item.orderNumber}</>))} </h2>
       <p className="w-4/5">21 March 2023 at 10:30 AM</p>
       </header>
   
@@ -30,13 +57,13 @@ const DetailOrder = () => {
   
             <div className="flex justify-between">
               <p>Full Name</p>
-              <p className="font-semibold">Ghaluh Wizard Anggoro</p>
+              <p className="font-semibold"> {order && order.map((item)=>(<>{item.fullName}</>))} </p>
             </div>
   
             <hr/>
             <div className="flex justify-between">
               <p>Address</p>
-              <p className="font-semibold">Griya bandung indah</p>
+              <p className="font-semibold"> {order && order.map((item)=>(<>{item.deliveryAddress}</>))} </p>
             </div>
   
             <hr/>
@@ -79,9 +106,18 @@ const DetailOrder = () => {
           <p className="text-xl">Your Order</p>
   
           <div className="flex flex-col gap-3">
+
+          {order && order.map((item)=>(
+              <OrderDetail
+              key={item.id}
+              variant={item.variant}
+              size={item.size}
+              quantity={item.quantity}
+              price={item.subTotal}
+              />
+            ))} 
             
-            <OrderDetail/>
-            <OrderDetail/>
+            {/* <OrderDetail/> */}
             
           </div>
   

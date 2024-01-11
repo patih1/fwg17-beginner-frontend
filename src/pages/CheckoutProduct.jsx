@@ -1,62 +1,97 @@
 import * as Ic from 'react-feather';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import PaymentDetail from '../component/PaymentDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import axios from 'axios';
+import { setProduct } from '../redux/reducer/product';
 // import Item1 from '../assets/img/card1.png';
 // import Item2 from '../assets/img/card2.png';
 // import Item3 from '../assets/img/card3.png';
 // import Item4 from '../assets/img/card4.jpeg';
 
 const CheckoutProduct = () => {
-  const [where, setWhere] = useState()
+  const [where, setWhere] = useState(1)
   const data = useSelector(state => state.product.data)
   const user = useSelector(state => state.profile.data)
   const token = useSelector(state => state.auth.token)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [email, setEmail] = useState(user.email)
+  const [fullName, setFullName] = useState(user.fullName)
   // const dispatch = useDispatch()
 
-
-  let variantPrice = 0
-  let sizePrice = 0
-
-  data.variant == 'ice' ? variantPrice = 3000 : 0
-  data.size == 'medium' ? sizePrice = 5000 : 0
-  data.size == 'large' ? sizePrice = 10000 : 0
-
-  const order = data.price + variantPrice + sizePrice
-  const tax = order * 1/20
+  const order = data.reduce((acum, curr) => { return acum + curr.price - curr.discount; }, 0)
+  const tax = order * 1/10
   const subTotal = order + tax
 
   const placeOrder = async (event) => {
     event.preventDefault()
-    try{
-      const orderNumber = '#085467097' //Date.now()
-      const email = event.target.email.value
-      const fullName = event.target.fullName.value
-      const deliveryAddress = event.target.address.value
-      const total = '10'
-      const {id} = user
+    const orderNumber = '#' + Date.now()
+    const {value: newEmail} = event.target.email
+    const {value : newFullName} = event.target.fullName
+    if(newEmail){
+      setEmail(newEmail)
+    }
+    if(newFullName){
+      setFullName(newFullName)
+    }
+    // const deliveryAddress = event.target.address.value
+    const total = '10'
+    const id = user.id.toString()
 
-      // console.log(email)
-      const form = new FormData()
+    // console.log(id)
+    
+    try{
+
+      const form = new URLSearchParams()
       form.append('userId', id)
       form.append('orderNumber', orderNumber)
       form.append('total', total)
-      form.append('fullname', fullName)
+      form.append('fullName', fullName)
       form.append('email', email)
 
       const {data : item} = await axios.post('http://localhost:5050/customer/orders', form , {
         headers : {
-          'Content-Type' : 'multipart/form-data',
+          // 'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
         }
       })
+
+      for(let i = 0; i < data.length; i++){
+        const form1 = new URLSearchParams()
+        form1.append('productId', data[i].productId)
+        form1.append('productSizeId', data[i].sizeId)
+        form1.append('productVariantId', data[i].variantId)
+        form1.append('quantity', data[i].quantity)
+        form1.append('orderId', item.results.id)
+  
+        const {data : detail} = await axios.post('http://localhost:5050/customer/orderDetails', form1 , {
+          headers : {
+            // 'Content-Type' : 'multipart/form-data',
+            'Authorization' : `Bearer ${token}`
+          }
+        })
+        const form2 = new URLSearchParams()
+        form2.append('total', 'true')
+  
+        const {data : update} = await axios.patch(`http://localhost:5050/customer/orders/${detail.results.orderId}`, form , {
+          headers : {
+            // 'Content-Type' : 'multipart/form-data',
+            'Authorization' : `Bearer ${token}`
+          }
+        })
+      }
+
+
+
+      console.log(0)
       
+      navigate('/history-order')
     }catch(err){
-      alert(err)
+      alert(err.response.data.message)
     }
   }
 
@@ -81,14 +116,16 @@ const CheckoutProduct = () => {
   
           <div className="flex flex-col gap-3 overflow-auto h-[50vh]">
             
+          {data && data.map((item)=>(
             <PaymentDetail 
-            key={data.id}
-            name={data.name}
-            price={data.price}
-            discount={data.discount}
-            quantity={data.quantity}
-            size={data.size}
-            variant={data.variant}/>
+            key={item.id}
+            name={item.name}
+            price={item.price}
+            discount={item.discount}
+            quantity={item.quantity}
+            size={item.size}
+            variant={item.variant}/>
+          ))}
             
           </div>
   
@@ -119,7 +156,7 @@ const CheckoutProduct = () => {
                   <p>Where?</p>
                   <div className="flex gap-3">
     
-                    <input type="radio" name="where" value='dine-in' id="dine-in" className="hidden"/>
+                    <input checked='checked' type="radio" name="where" value='dine-in' id="dine-in" className="hidden"/>
                     <input type="radio" name="where" value='door-delivery' id="door-delivery" className="hidden"/>
                     <input type="radio" name="where" value='pick-up' id="pick-up" className="hidden"/>
                   
@@ -161,7 +198,7 @@ const CheckoutProduct = () => {
               <p>Sub Total</p>
               <p className="font-semibold">IDR{subTotal.toLocaleString('id')}</p>
             </div>
-            <button form='buy'  type='submit' className="w-full bg-[#FF8906] h-8 rounded"><Link to="/history-order">Checkout</Link></button>
+            <button form='buy' type='submit' className="w-full bg-[#FF8906] h-8 rounded">Checkout</button>
             <p>We Accept</p>
             <div className="flex justify-between w-full">
               <img src="https://i0.wp.com/febi.uinsaid.ac.id/wp-content/uploads/2020/11/Logo-BRI-Bank-Rakyat-Indonesia-PNG-Terbaru.png?ssl=1" className="object-contain w-9 max-h-9"></img>

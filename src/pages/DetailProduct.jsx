@@ -1,6 +1,6 @@
 import Footer from '../component/Footer';
 import * as Ic from 'react-feather';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../component/ProductCard';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -15,12 +15,31 @@ import { setProduct as setProductAction } from '../redux/reducer/product';
 
 const DetailProduct = () => {
   const {id} = useParams()
-  const [size, setSize] = useState()
-  const [variant, setVariant] = useState()
+  const [sizeId, setSizeId] = useState(1)
+  const [variantId, setVariantId] = useState(2) 
   const [quantity, setQuantity] = useState(1)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const test = (event) =>{
+  const option = (num) => {
+    if(num === 1 || num === 2 || num === 3){
+      if(num === 1){
+        setSizeId(1)
+      }else if(num === 2){
+        setSizeId(2)
+      }else{
+        setSizeId(3)
+      }
+    }else if(num === 4 || num === 5){
+      if(num === 4){
+        setVariantId(2)
+      }else{
+        setVariantId(1)
+      }
+    }
+  }
+
+  const setDataItem = (event) =>{
     event.preventDefault()
     const {value: size} = event.target.size
     const {value: variant} = event.target.variant
@@ -28,16 +47,20 @@ const DetailProduct = () => {
     const data = {
       productId: id,
       name: product.name,
-      price: product.basePrice,
+      price: product.basePrice + variantPrice + sizePrice,
       discount: product.discount,
       image: product.image,
       quantity: quantity,
       size: size,
-      variant: variant
+      // additionalPrice: variantPrice + sizePrice,
+      variant: variant,
+      sizeId: sizeId,
+      variantId: variantId
     }
 
     dispatch(setProductAction(data))
-    console.log(data)
+    
+    navigate('/checkout-product')
   }
   
   const [products, setProducts] = useState()
@@ -48,21 +71,36 @@ const DetailProduct = () => {
     
     setProducts(res.data.results)
   }
-  
-    const [product, setProduct] = useState()
-    const getProduct = async () =>{
+
+  const [product, setProduct] = useState()
+  const [variantPrice, setVariantPrice] = useState()
+  const [sizePrice, setSizePrice] = useState()
+  const getProduct = async () =>{
       const res = await axios.get(`http://localhost:5050/products/${id}`) 
+      const res2 = await axios.get(`http://localhost:5050/productVariant/${variantId}`) 
+      const res3 = await axios.get(`http://localhost:5050/productSize/${sizeId}`) 
       
       setProduct(res.data.results)
+      setVariantPrice(res2.data.results.additionalPrice)
+      setSizePrice(res3.data.results.additionalPrice)
     }
-  
+    
+    let price = product?.basePrice
+    if(product?.discount){
+      price = product?.basePrice - product?.discount
+    }
+    
     useEffect(() => {
       getProduct()
-    },[products])
+    },[product])
   
     useEffect(() => {
       getProducts()
     },[])
+
+    const test = () => {
+      console.log(product)
+    }
 
   return(
     <>
@@ -92,8 +130,8 @@ const DetailProduct = () => {
         <div className="w-32 h-10 bg-[#D00000] rounded-full flex items-center justify-center text-white">FLASH SALE!</div>
         <h1 className="text-5xl">{product?.name}</h1>
         <div className="flex items-center gap-3">
-          {product?.discount && <p className="text-[#D00000] line-through text-sm">IDR{product?.discount.toLocaleString('id')}</p>}
-          <p className="text-xl text-[#FF8906]">IDR{product?.basePrice.toLocaleString('id')}</p>
+          {product?.discount && <p className="text-[#D00000] line-through text-sm">IDR{product?.basePrice.toLocaleString('id')}</p>}
+          <p className="text-xl text-[#FF8906]">IDR{price?.toLocaleString('id')}</p>
         </div>
 
         <div className="flex gap-3">
@@ -114,7 +152,7 @@ const DetailProduct = () => {
           {product?.description}
         </p>
 
-        <form action="" onSubmit={test}>
+        <form action="" onSubmit={setDataItem}>
           <div className="flex">
             <button onClick={()=>{quantity > 1 ? setQuantity(quantity-1) : setQuantity(1)}} type='button' className="flex w-6 h-6 items-center justify-center border border-[#FF8906]">-</button>
             <div type="text" value={quantity} name="quantity" id="quantity" className="flex items-center justify-center w-6">{quantity}</div>
@@ -124,17 +162,17 @@ const DetailProduct = () => {
           <div>
             <p>Choose Size</p>
             <div className="flex gap-3">
-                <input type="radio" name="size" id="regular" className="" value='regular'/>
+                <input checked="checked" type="radio" name="size" id="regular" className="hidden" value='regular'/>
                 <input type="radio" name="size" id="medium" className="hidden" value='medium'/>
                 <input type="radio" name="size" id="large" className="hidden" value='large'/> 
 
-                <button type='button' onClick={()=>{setSize(1)}} className='flex-1'><label className={`${size == 1 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="regular">Regular</label></button>
+                <button type='button' onClick={()=>{option(1)}} className='flex-1'><label className={`${sizeId == 1 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="regular">Regular</label></button>
               
 
-                <button type='button' onClick={()=>{setSize(2)}} className='flex-1'><label className={`${size == 2 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="medium">Medium</label></button>
+                <button type='button' onClick={()=>{option(2)}} className='flex-1'><label className={`${sizeId == 2 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="medium">Medium</label></button>
               
 
-                <button type='button' onClick={()=>{setSize(3)}} className='flex-1'><label className={`${size == 3 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="large">Large</label></button>
+                <button type='button' onClick={()=>{option(3)}} className='flex-1'><label className={`${sizeId == 3 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`} htmlFor="large">Large</label></button>
 
             </div>
           </div>
@@ -143,17 +181,17 @@ const DetailProduct = () => {
             <p>Hot/Ice?</p>
             <div className="flex gap-3">
 
-                <button className='flex-1'type='button' onClick={()=>{setVariant(2)}}><label htmlFor="ice" className={`${variant == 2 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`}>Ice</label></button>
-                <button className='flex-1'type='button' onClick={()=>{setVariant(1)}}><label htmlFor="hot" className={`${variant == 1 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`}>Hot</label></button>
+                <button className='flex-1'type='button' onClick={()=>{option(4)}}><label htmlFor="ice" className={`${variantId == 2 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`}>Ice</label></button>
+                <button className='flex-1'type='button' onClick={()=>{option(5)}}><label htmlFor="hot" className={`${variantId == 1 ? 'border-[#FF8906]' : ''} flex-1 flex justify-center border pl-4 hover:border-[#FF8906] h-8 items-center`}>Hot</label></button>
               
-                <input type="radio" name="variant" id="ice" value='ice' className="hidden"/>
+                <input checked="checked" type="radio" name="variant" id="ice" value='ice' className="hidden"/>
                 <input type="radio" name="variant" id="hot" value='hot' className="hidden"/>
 
             </div>
           </div>
 
           <div className="flex gap-3">
-            <button type="submit" className="flex-1 border border-[#FF8906] mt-10 h-10 bg-[#FF8906] rounded"><Link to="/checkout-product">Buy</Link></button>
+            <button type="submit" className="flex-1 border border-[#FF8906] mt-10 h-10 bg-[#FF8906] rounded">Buy</button>
             <button type='button' className="flex-1 border border-[#FF8906] mt-10 h-10 flex justify-center items-center text-[#FF8906] rounded gap-3"><Ic.ShoppingCart className=""></Ic.ShoppingCart>add to cart</button>
           </div>
 
@@ -193,7 +231,7 @@ const DetailProduct = () => {
       <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">2</button>
       <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">3</button>
       <button className="w-10 h-10 bg-[#F8F8F8] rounded-full">4</button>
-      <button className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
+      <button onClick={test} className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
     </div>
 
       </section>

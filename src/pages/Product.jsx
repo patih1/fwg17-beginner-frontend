@@ -6,14 +6,16 @@ import Footer from '../component/Footer';
 import ProductCard from '../component/ProductCard';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import PaginationButton from '../component/PaginationButton';
+import { useSearchParams } from 'react-router-dom';
 
 const Products = ()=>{
   const [showFilter, setShowFilter] = useState(false)
-  
   const [products, setProducts] = useState([{}])
   const [pageInfo, setPageInfo] = useState(null)
   const [keyword, setKeyword] = useState('')
-
+  const [searchParams, setSearchParams] = useSearchParams()
+  
   const getProducts = async (page) =>{
     let res
     if(page === 'next'){
@@ -47,10 +49,21 @@ const Products = ()=>{
         search: keyword
       }})
     }
-
+    
     setPageInfo(res.data.pageInfo)
     setProducts(res.data.results)
   }
+
+  const pageLength = pageInfo?.totalPage // total page
+  const currentPage = pageInfo?.currentPage
+
+
+  
+    const pages = () => {
+      return <>
+        <button type='button' onClick={()=>getProducts()} className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
+      </>
+    }
 
   const filter = async (event) =>{
     
@@ -67,17 +80,32 @@ const Products = ()=>{
 
       
     setProducts(res.data.results)
-        
+    setSearchParams({
+      search: search
+    })
 
     }catch(err){
       console.log(err.response.data.message)
     }
   }
 
+  const getProductBySearchParams = async (search) => {
+    const res = await axios.get('http://localhost:5050/products', {params: {
+        search: search
+      }})
+      
+    setProducts(res.data.results)
+  }
+
   useEffect(()=>{
-    getProducts()
+    const value = searchParams.get('search')
+    if(value){
+      getProductBySearchParams(value)
+    }else{
+      getProducts()
+    }
     filter()
-  }, [])
+  }, [searchParams])
 
   return(
     <>
@@ -168,7 +196,7 @@ const Products = ()=>{
   
                 <div action="" className="flex flex-col w-full gap-8">
                   <label htmlFor="search">Search</label>
-                  <input type="text" name="search" id="search" placeholder="Search Your Product" className="h-10 pl-4 text-black -mt-7"/>
+                  <input defaultValue={searchParams.get('search')} type="text" name="search" id="search" placeholder="Search Your Product" className="h-10 pl-4 text-black -mt-7"/>
                   <p>Category</p>
                   <div className="flex gap-4">
                     <input type="checkbox" name="fav-product" id="fav-product"/>
@@ -238,6 +266,7 @@ const Products = ()=>{
             </div>
    
             <div className="flex justify-center w-full gap-3">
+              {/* <PaginationButton num={currentPage} limit={pageLength}/> */}
               <button type='button' onClick={()=>getProducts('1')} className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
               <button type='button' onClick={()=>getProducts('2')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">2</button>
               <button type='button' onClick={()=>getProducts('3')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">3</button>

@@ -20,40 +20,36 @@ const Profile = () => {
   const [preview, setPreview] = useState()
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    axios.get('http://localhost:5050/customer/users', {
-      headers : {
-        'Authorization' : `Bearer ${token}`
-      }
-    }).then(({data})=>{
-      // setUser(data.result)
-      dispatch(setProfile(data.result))
-      console.log(user)
-    }).catch((err)=>{console.log(err)})
-  },[])
-
   const updateProfileData = async (e) =>{
-    e.preventDefault()
-    const form = new FormData()
-    const fields = ['fullName', 'email', 'address', 'phoneNumber', 'password']
-    fields.forEach((field)=>{
-      if(e.target[field]){
-        form.append(field, e.target[field].value)
-        e.target[field].value = ""
-      }
-    })
-    const {data} = await axios.patch('http://localhost:5050/customer/users', form, {
-      headers : {
-        'Content-Type' : 'multipart/form-data',
-        'Authorization' : `Bearer ${token}`
-      }}) 
-      if(data.result){
-        dispatch(setProfile(data.result))
-      }
+    if(e){
+      e.preventDefault()
+    }
+    try{
+      const form = new FormData()
+      const fields = ['fullName', 'email', 'address', 'phoneNumber', 'password']
+      
+      fields.forEach((field)=>{
+        if(e.target[field]){
+          form.append(field, e.target[field].value)
+          e.target[field].value = ""
+        }
+      })
+      const {data} = await axios.patch('http://localhost:5050/customer/users', form, {
+        headers : {
+          'Content-Type' : 'multipart/form-data',
+          'Authorization' : `Bearer ${token}`
+        }})
+          dispatch(setProfile(data.results))
+      
+    }catch(err){
+      ''
+    }
   }
   
   useEffect(() => {
-    updateProfileData()
+    updateProfileData().then(({data})=>{
+      dispatch(setProfile(data.results))
+    }).catch((err)=>{console.log(err)})
   },[])
 
   const changePicture = (e) =>{
@@ -62,7 +58,10 @@ const Profile = () => {
   }
 
   const uploadPhoto = async (e) =>{
-    e.preventDefault()
+    if(e){
+      e.preventDefault()
+
+    }
     try{
       const [file] = e.target.picture.files
       console.log(file)
@@ -74,11 +73,12 @@ const Profile = () => {
           'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
         }})
+        
+        dispatch(setProfile(data.results))
         setPreview(null)
-        // console.log(data)
       }
     }catch(err){
-      window.alert(err.response)
+      window.alert(err.response.data.message)
     }
   }
 
@@ -97,10 +97,10 @@ const Profile = () => {
     <div className="flex justify-center w-full md:w-2/6 md:justify-end">
 
       <form onSubmit={uploadPhoto} className="flex flex-col items-center w-4/5 gap-4 p-6 border md:w-3/5 border-slate-300">
-        <p className="text-2xl font-semibold text-center">{user.fullName}</p>
-        <p className="">{user.email}</p>
+        <p className="text-2xl font-semibold text-center">{user?.fullName}</p>
+        <p className="">{user?.email}</p>
         <label className="flex flex-col items-center w-full gap-5">
-          <img className="flex items-center object-cover overflow-hidden rounded-full w-28 h-28" src={preview ? preview : `http://localhost:5050/uploads/users/${user.picture}`} alt=""/>
+          <img className="flex items-center object-cover overflow-hidden bg-black rounded-full w-28 h-28" src={preview ? preview : `http://localhost:5050/uploads/users/${user?.picture}`} alt=""/>
           <input multiple={false} onChange={changePicture} type="file" name="picture" id="picture" className="hidden"/>
           
           <label htmlFor="picture" className={`${preview ? 'hidden' : ''} bg-[#FF8906] w-full rounded h-10 flex items-center justify-center`}>Upload New Photo</label>
@@ -109,7 +109,7 @@ const Profile = () => {
             <button type="reset" onClick={()=>{setPreview()}} className={`bg-[#f05d5d] rounded h-10 flex items-center justify-center w-2/5`}><Ic.X/> Cancel</button>
           </div>
         </label>
-        <p>Since {user.createdAt?.slice(0,-14)}</p>
+        <p>Since {user?.createdAt?.slice(0,-14)}</p>
       </form>
 
     </div>
@@ -120,17 +120,17 @@ const Profile = () => {
 
         <div className="flex flex-col">
           <label className="font-semibold" htmlFor="fullName">Full Name</label>
-          <input className="px-5 border rounded h-9" type="text" name="fullName" id="fullName" placeholder={user.fullName}/>
+          <input className="px-5 border rounded h-9" type="text" name="fullName" id="fullName" placeholder={user?.fullName}/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-semibold" htmlFor="email">Email</label>
-          <input className="px-5 border rounded h-9" type="email" name="email" id="email" placeholder={user.email}/>
+          <input className="px-5 border rounded h-9" type="email" name="email" id="email" placeholder={user?.email}/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-semibold" htmlFor="phoneNumber">Phone</label>
-          <input className="px-5 border rounded h-9" type="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder={user.phoneNumber}/>
+          <input className="px-5 border rounded h-9" type="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder={user?.phoneNumber}/>
         </div>
 
         <div className="flex flex-col">
@@ -143,7 +143,7 @@ const Profile = () => {
 
         <div className="flex flex-col">
           <label className="font-semibold" htmlFor="address">Address</label>
-          <input className="px-5 border rounded h-9" type="text" name="address" id="address" placeholder={user.address}/>
+          <input className="px-5 border rounded h-9" type="text" name="address" id="address" placeholder={user?.address}/>
         </div>
 
         <div>
