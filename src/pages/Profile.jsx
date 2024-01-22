@@ -34,7 +34,7 @@ const Profile = () => {
           e.target[field].value = ""
         }
       })
-      const {data} = await axios.patch('http://localhost:5050/customer/users', form, {
+      const {data} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/users`, form, {
         headers : {
           'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
@@ -68,7 +68,7 @@ const Profile = () => {
       if(file){
         const form = new FormData()
         form.append('picture', file)
-        const {data} = await axios.patch('http://localhost:5050/customer/users', form, {
+        const {data} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/users`, form, {
         headers : {
           'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
@@ -100,7 +100,7 @@ const Profile = () => {
         <p className="text-2xl font-semibold text-center">{user?.fullName}</p>
         <p className="">{user?.email}</p>
         <label className="flex flex-col items-center w-full gap-5">
-          <img className="flex items-center object-cover overflow-hidden bg-black rounded-full w-28 h-28" src={preview ? preview : `http://localhost:5050/uploads/users/${user?.picture}`} alt=""/>
+          <img className="flex items-center object-cover overflow-hidden bg-black rounded-full w-28 h-28" src={preview ? preview : `${import.meta.env.VITE_BACKEND_URL}/uploads/users/${user?.picture}`} alt=""/>
           <input multiple={false} onChange={changePicture} type="file" name="picture" id="picture" className="hidden"/>
           
           <label htmlFor="picture" className={`${preview ? 'hidden' : ''} bg-[#FF8906] w-full rounded h-10 flex items-center justify-center`}>Upload New Photo</label>

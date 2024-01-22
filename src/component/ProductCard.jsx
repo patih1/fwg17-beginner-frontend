@@ -50,7 +50,7 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
   }
 
   return(
-    <Link to={to} style={image ? {backgroundImage: `url(http://localhost:5050/uploads/products/${image})`} : {backgroundImage: `url(http://localhost:5050/uploads/products/card1.png)`}} className={`h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
+    <Link to={to} style={image ? {backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/uploads/products/${image})`} : {backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/uploads/products/card1.png)`}} className={`h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
         {x()}
         
 

@@ -19,32 +19,32 @@ const Products = ()=>{
   const getProducts = async (page) =>{
     let res
     if(page === 'next'){
-      res = await axios.get('http://localhost:5050/products', {params: {
+      res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: pageInfo.nextPage,
         search: keyword
       }})
-    }else if(page === '1'){
-      res = await axios.get('http://localhost:5050/products', {params: {
+    }else if(page === `1`){
+      res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 1,
         search: keyword
       }})
-    }else if(page === '2'){
-      res = await axios.get('http://localhost:5050/products', {params: {
+    }else if(page === `2`){
+      res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 2,
         search: keyword
       }})
-    }else if(page === '3'){
-      res = await axios.get('http://localhost:5050/products', {params: {
+    }else if(page === `3`){
+      res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 3,
         search: keyword
       }})
-    }else if(page === '4'){
-      res = await axios.get('http://localhost:5050/products', {params: {
+    }else if(page === `4`){
+      res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 4,
         search: keyword
       }})
     }else{
-      res = await axios.get('http://localhost:5050/products', {params: {
+      res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         itemLimit: 6,
         search: keyword
       }})
@@ -74,7 +74,7 @@ const Products = ()=>{
     setKeyword(search)
 
     try{
-      const res = await axios.get('http://localhost:5050/products', {params: {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         search: search
       }})
 
@@ -90,7 +90,7 @@ const Products = ()=>{
   }
 
   const getProductBySearchParams = async (search) => {
-    const res = await axios.get('http://localhost:5050/products', {params: {
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         search: search
       }})
       

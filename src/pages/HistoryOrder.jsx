@@ -19,7 +19,7 @@ const HistoryOrder = () => {
 
   useEffect(()=>{
     if(token){
-      axios.get(`http://localhost:5050/customer/orders/${user.id}`, {
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders/${user.id}`, {
         headers : {
           'Authorization' : `Bearer ${token}`
         }

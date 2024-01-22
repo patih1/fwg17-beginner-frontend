@@ -53,7 +53,7 @@ const CheckoutProduct = () => {
       form.append('fullName', fullName)
       form.append('email', email)
 
-      const {data : item} = await axios.post('http://localhost:5050/customer/orders', form , {
+      const {data : item} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, form , {
         headers : {
           // 'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
@@ -68,7 +68,7 @@ const CheckoutProduct = () => {
         form1.append('quantity', data[i].quantity)
         form1.append('orderId', item.results.id)
   
-        const {data : detail} = await axios.post('http://localhost:5050/customer/orderDetails', form1 , {
+        const {data : detail} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orderDetails`, form1 , {
           headers : {
             // 'Content-Type' : 'multipart/form-data',
             'Authorization' : `Bearer ${token}`
@@ -77,7 +77,7 @@ const CheckoutProduct = () => {
         const form2 = new URLSearchParams()
         form2.append('total', 'true')
   
-        const {data : update} = await axios.patch(`http://localhost:5050/customer/orders/${detail.results.orderId}`, form , {
+        const {data : update} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/orders/${detail.results.orderId}`, form , {
           headers : {
             // 'Content-Type' : 'multipart/form-data',
             'Authorization' : `Bearer ${token}`

@@ -19,7 +19,7 @@ const DetailOrder = () => {
   
   useEffect(()=>{
     if(token){
-      axios.get(`http://localhost:5050/customer/orderDetails/${id}`, {
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orderDetails/${id}`, {
         headers : {
           'Authorization' : `Bearer ${token}`
         }

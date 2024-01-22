@@ -14,7 +14,7 @@ const Home = () => {
 
   const [products, setProducts] = useState()
   const getProduct = async () => {
-    const res = await axios.get(`http://localhost:5050/products`, {params: {
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
       itemLimit: 4,
       recommended: true
     }}) 

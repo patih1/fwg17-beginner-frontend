@@ -65,7 +65,7 @@ const DetailProduct = () => {
   
   const [products, setProducts] = useState()
   const getProducts = async () =>{
-    const res = await axios.get(`http://localhost:5050/products`, {params: {
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
       itemLimit: 3
     }}) 
     
@@ -76,9 +76,9 @@ const DetailProduct = () => {
   const [variantPrice, setVariantPrice] = useState()
   const [sizePrice, setSizePrice] = useState()
   const getProduct = async () =>{
-      const res = await axios.get(`http://localhost:5050/products/${id}`) 
-      const res2 = await axios.get(`http://localhost:5050/productVariant/${variantId}`) 
-      const res3 = await axios.get(`http://localhost:5050/productSize/${sizeId}`) 
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`) 
+      const res2 = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/productVariant/${variantId}`) 
+      const res3 = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/productSize/${sizeId}`) 
       
       setProduct(res.data.results)
       setVariantPrice(res2.data.results.additionalPrice)
@@ -114,7 +114,7 @@ const DetailProduct = () => {
 
       <div className="flex flex-col items-center justify-center w-full gap-5 text-white md:justify-start md:h-4/6 md:items-end">
         <div className='object-contain w-3/4 md:w-4/6 md:h-4/5 h-2/4 bg-slate-50'>
-        <img src={product?.image ? `http://localhost:5050/uploads/products/${product?.image}` : Item1} className="object-cover w-full h-full"/>
+        <img src={product?.image ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${product?.image}` : Item1} className="object-cover w-full h-full"/>
         </div>
         <div className="flex gap-4 md:w-8/12 h-1/3 md:h-1/4">
           <img src={Item2} className="object-cover w-24 h-24 md:w-1/3 md:h-full"/>

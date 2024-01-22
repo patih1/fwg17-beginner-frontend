@@ -31,7 +31,7 @@ const Register = ()=>{
       form.append('password', password)
   
       try{
-        const {data} = await axios.post('http://localhost:5050/auth/register', form.toString())
+        const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, form.toString())
         // const {token} = data.results
           window.location = '/login'
           // alert('asdasdas')
