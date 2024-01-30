@@ -27,7 +27,7 @@ const Navbar = () =>{
         
       }).catch((err)=>{console.log(err)})
     }
-  },[])
+  },[token, dispatch])
 
   const onLogout = () =>{
     dispatch(logout())

@@ -1,11 +1,17 @@
 import { Link } from "react-router-dom"
 import * as Ic from 'react-feather'
+// import React from "react"
+import card from "../assets/img/card1.png"
 
 // eslint-disable-next-line react/prop-types
 const ProductCard = ({image, small, to='/detail-product', price='20000', discount, flashSale=false, name='product', description}) => {
   // if(!image){
   //   image='1701181414676.jpeg'
   // }
+
+  const cardImage = {
+    backgroundImage : `url(${card})`
+  }
   
   const x = () => {
     let size = ''
@@ -50,7 +56,7 @@ const ProductCard = ({image, small, to='/detail-product', price='20000', discoun
   }
 
   return(
-    <Link to={to} style={image ? {backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/uploads/products/${image})`} : {backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/uploads/products/card1.png)`}} className={`h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
+    <Link to={to} style={image ? {backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/uploads/products/${image})`} : cardImage} className={`h-[280px] w-[268px] bg-cover bg-center flex justify-center items-center ${sizes().size}`}>
         {x()}
         
 
