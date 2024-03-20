@@ -114,7 +114,7 @@ const DetailProduct = () => {
 
       <div className="flex flex-col items-center justify-center w-full gap-5 text-white md:justify-start md:h-4/6 md:items-end">
         <div className='object-contain w-3/4 md:w-4/6 md:h-4/5 h-2/4 bg-slate-50'>
-        <img src={product?.image ? `${import.meta.env.VITE_BACKEND_URL}/uploads/products/${product?.image}` : Item1} className="object-cover w-full h-full"/>
+        <img src={product?.image ? `${product?.image}` : Item1} className="object-cover w-full h-full"/>
         </div>
         <div className="flex gap-4 md:w-8/12 h-1/3 md:h-1/4">
           <img src={Item2} className="object-cover w-24 h-24 md:w-1/3 md:h-full"/>

@@ -59,7 +59,7 @@ const Navbar = () =>{
         </> }
 
         {token && <button onClick={onLogout} className="border border-[#FF8906] bg-[#FF8906] px-5 py-2 rounded text-black">Log Out</button>}
-        {token && <Link to='/profile'><button className='overflow-hidden rounded-full'><img className='object-cover w-10 h-10' src={user?.picture? `${import.meta.env.VITE_BACKEND_URL}/uploads/users/${user?.picture}` : 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'}></img></button></Link>}
+        {token && <Link to='/profile'><button className='overflow-hidden rounded-full'><img className='object-cover w-10 h-10' src={user?.picture? `${user?.picture}` : 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'}></img></button></Link>}
 
       </div>
     </div>
