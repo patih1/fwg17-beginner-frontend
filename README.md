@@ -87,4 +87,4 @@ Contributions are always welcome!
 
 ## Feedback
 
-If you have any feedback, please reach out to us at contactme@haidar.xyz
+If you have any feedback, please reach out to me at contactme@haidar.xyz
