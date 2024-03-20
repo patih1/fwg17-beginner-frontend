@@ -39,10 +39,10 @@ const Login = ()=>{
 
     try{
         const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form.toString())
-        const {token : resultToken} = data.result
-        // setToken(resultToken)
-        // window.localStorage.setItem("token", resultToken)
-        dispatch(login(resultToken))
+        const {token : resultsToken} = data.results
+        // setToken(resultsToken)
+        // window.localStorage.setItem("token", resultsToken)
+        dispatch(login(resultsToken))
         setMessage(data.message)
         // setTimeout(() => {
         //   navigate('/')
