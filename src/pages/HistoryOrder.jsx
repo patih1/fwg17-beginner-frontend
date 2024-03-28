@@ -15,11 +15,11 @@ import { useSelector } from 'react-redux';
 const HistoryOrder = () => {
   const [order, setOrder] = useState()
   const token = useSelector(state => state.auth.token)
-  const user = useSelector(state => state.profile.data)
+  // const user = useSelector(state => state.profile.data)
 
   useEffect(()=>{
     if(token){
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders/${user.id}`, {
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {
         headers : {
           'Authorization' : `Bearer ${token}`
         }
@@ -28,7 +28,7 @@ const HistoryOrder = () => {
         
       }).catch((err)=>{console.log(err)})
     }
-  },[user])
+  },[token])
 
   const debug = () =>{
     console.log(order)

@@ -29,7 +29,6 @@ const CheckoutProduct = () => {
 
   const placeOrder = async (event) => {
     event.preventDefault()
-    const orderNumber = '#' + Date.now()
     const {value: newEmail} = event.target.email
     const {value : newFullName} = event.target.fullName
     if(newEmail){
@@ -38,56 +37,26 @@ const CheckoutProduct = () => {
     if(newFullName){
       setFullName(newFullName)
     }
-    // const deliveryAddress = event.target.address.value
-    const total = '10'
-    const id = user.id.toString()
 
-    // console.log(id)
     
     try{
 
       const form = new URLSearchParams()
-      form.append('userId', id)
-      form.append('orderNumber', orderNumber)
-      form.append('total', total)
       form.append('fullName', fullName)
       form.append('email', email)
+      
+      form.append('productId', data[0].productId)
+      form.append('productSizeId', data[0].sizeId)
+      form.append('productVariantId', data[0].variantId)
+      form.append('quantity', data[0].quantity)
+      
 
-      const {data : item} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, form , {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, form , {
         headers : {
           // 'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
         }
       })
-
-      for(let i = 0; i < data.length; i++){
-        const form1 = new URLSearchParams()
-        form1.append('productId', data[i].productId)
-        form1.append('productSizeId', data[i].sizeId)
-        form1.append('productVariantId', data[i].variantId)
-        form1.append('quantity', data[i].quantity)
-        form1.append('orderId', item.results.id)
-  
-        const {data : detail} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orderDetails`, form1 , {
-          headers : {
-            // 'Content-Type' : 'multipart/form-data',
-            'Authorization' : `Bearer ${token}`
-          }
-        })
-        const form2 = new URLSearchParams()
-        form2.append('total', 'true')
-  
-        const {data : update} = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/customer/orders/${detail.results.orderId}`, form , {
-          headers : {
-            // 'Content-Type' : 'multipart/form-data',
-            'Authorization' : `Bearer ${token}`
-          }
-        })
-      }
-
-
-
-      console.log(0)
       
       navigate('/history-order')
     }catch(err){
