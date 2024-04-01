@@ -13,18 +13,35 @@ import { useParams } from "react-router-dom";
 // import Item4 from '../assets/img/card4.jpeg';
 
 const DetailOrder = () => {
+  const [orderDetail, setOrderDetail] = useState()
   const [order, setOrder] = useState()
   const token = useSelector(state => state.auth.token)
+  const user = useSelector(state => state.profile.data)
   const {id} = useParams()
   
   useEffect(()=>{
+    const getOrder = async ()=>{
+      try{
+        const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders/${id}`, {
+          headers : {
+            'Authorization' : `Bearer ${token}`
+          }
+        })
+        setOrder(data.results)
+
+      }catch(err){
+        console.log(err)
+    }}
+
+    getOrder()
+
     if(token){
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orderDetails/${id}`, {
         headers : {
           'Authorization' : `Bearer ${token}`
         }
       }).then(({data})=>{
-       setOrder(data.results)
+       setOrderDetail(data.results)
         
       }).catch((err)=>{console.log(err)})
     }
@@ -43,7 +60,7 @@ const DetailOrder = () => {
       {/* <button onClick={debug}>asdasdasdasd</button> */}
 
       <header className="flex flex-col items-center w-full my-8">
-      <h2 className="w-4/5 text-2xl md:text-5xl">Order {order && order.map((item)=>(<>{item.orderNumber}</>))} </h2>
+      <h2 className="w-4/5 text-2xl md:text-5xl">Order {order?.orderNumber}</h2>
       <p className="w-4/5">21 March 2023 at 10:30 AM</p>
       </header>
   
@@ -57,19 +74,19 @@ const DetailOrder = () => {
   
             <div className="flex justify-between">
               <p>Full Name</p>
-              <p className="font-semibold"> {order && order.map((item)=>(<>{item.fullName}</>))} </p>
+              <p className="font-semibold">{order?.fullName} </p>
             </div>
   
             <hr/>
             <div className="flex justify-between">
               <p>Address</p>
-              <p className="font-semibold"> {order && order.map((item)=>(<>{item.deliveryAddress}</>))} </p>
+              <p className="font-semibold">{order?.deliveryAddress} </p>
             </div>
   
             <hr/>
             <div className="flex justify-between">
               <p>Phone</p>
-              <p className="font-semibold">082116304338</p>
+              <p className="font-semibold">{user?.phoneNumber} </p>
             </div>
   
             <hr/>
@@ -89,11 +106,10 @@ const DetailOrder = () => {
               <p>Status</p>
               <p className="font-semibold text-xs bg-[rgba(0,167,0,0.20)] flex items-center rounded-full w-12 justify-center text-[#00A700]">Done</p>
             </div>
-  
             <hr/>
             <div className="flex justify-between">
               <p>Total Transaksi</p>
-              <p className="font-semibold text-[#FF8906]">Idr 40.000</p>
+              <p className="font-semibold text-[#FF8906]">IDR{order?.total?.toLocaleString('id')}</p>
             </div>
           </div>
         </div>
@@ -107,7 +123,7 @@ const DetailOrder = () => {
   
           <div className="flex flex-col gap-3">
 
-          {order && order.map((item)=>(
+          {orderDetail && orderDetail.map((item)=>(
               <OrderDetail
               key={item.id}
               variant={item.variant}
