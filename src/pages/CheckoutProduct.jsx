@@ -18,7 +18,6 @@ const CheckoutProduct = () => {
   const user = useSelector(state => state.profile.data)
   const token = useSelector(state => state.auth.token)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [email, setEmail] = useState(user.email)
   const [fullName, setFullName] = useState(user.fullName)
   // const dispatch = useDispatch()
@@ -91,9 +90,10 @@ const CheckoutProduct = () => {
   
           <div className="flex flex-col gap-3 overflow-auto h-[50vh]">
             
-          {data && data.map((item)=>(
+          {data && data.map((item, i)=>(
             <PaymentDetail 
             key={item.id}
+            order={i}
             name={item.name}
             price={item.price}
             discount={item.discount}

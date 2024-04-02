@@ -10,8 +10,7 @@ import { setProfile } from '../redux/reducer/profile';
 const Navbar = () =>{
   const navigate = useNavigate()
   const [showMenu, setShowMenu] = React.useState(false)
-  // const [token, setToken] = useState(window.localStorage.getItem('token'))
-  // const [user, setUser] = useState({})
+  const data = useSelector(state => state.product.data)
   const user = useSelector(state => state.profile.data)
   const token = useSelector(state => state.auth.token)
   const dispatch = useDispatch()
@@ -49,7 +48,7 @@ const Navbar = () =>{
         <div className="flex flex-col-reverse gap-14 md:flex-row">
           <Ic.Search className=""></Ic.Search>
           <div className="flex gap-10">
-            <Link to='/checkout-product'><Ic.ShoppingCart/></Link>
+            <Link className='relative' to='/checkout-product'>{data.length > 0 ? <div className='font-bold absolute px-1 text-[10px] bg-red-600 rounded-full -right-3 -top-2'>{data?.length}</div> : ''}<Ic.ShoppingCart/></Link>
             <button onClick={()=>setShowMenu(!showMenu)}><Ic.Menu className="md:hidden"></Ic.Menu></button>
           </div>
         </div>

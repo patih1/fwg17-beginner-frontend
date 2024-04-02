@@ -22,6 +22,7 @@ const Products = ()=>{
     event.preventDefault()
     const {value: search} = event.target.search
     setKeyword(search)
+    console.log(choosedCategory)
     setCategory(choosedCategory)
   }
 

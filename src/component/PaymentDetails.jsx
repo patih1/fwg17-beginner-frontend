@@ -1,7 +1,13 @@
+// import { useState } from "react"
 import * as Ic from "react-feather"
+import { useDispatch, useSelector } from "react-redux"
+import { setProduct2 as setProductAction } from '../redux/reducer/product';
 
 // eslint-disable-next-line react/prop-types
-const PaymentDetail = ({name, quantity, size, variant, price, discount}) => {
+const PaymentDetail = ({name, quantity, size, variant, price, discount, order}) => {
+  const data = useSelector(state => state.product.data)
+  // const [products, setProduct] = useState([])
+  const dispatch = useDispatch()
   if(!price){
     price = 10000
   }
@@ -10,6 +16,11 @@ const PaymentDetail = ({name, quantity, size, variant, price, discount}) => {
 
   if(discount){
     priceAfterDiscount = price - discount
+  }
+
+  const removeItem = () => {
+    const x = data.filter((word)=>word != data[order])
+    dispatch(setProductAction(x))
   }
 
   return (
@@ -27,7 +38,7 @@ const PaymentDetail = ({name, quantity, size, variant, price, discount}) => {
         </div>
       </div>
 
-      <button className="h-full flex items-center pl-auto absolute md:static text-[#D00000] md:mr-3 md:mb-0 md:pl-0 pl-72 md:pb-0 pb-20"><Ic.XCircle></Ic.XCircle></button>
+      <button onClick={removeItem} className="h-full flex items-center pl-auto absolute md:static text-[#D00000] md:mr-3 md:mb-0 md:pl-0 pl-72 md:pb-0 pb-20"><Ic.XCircle></Ic.XCircle></button>
 
     </div>
   )
