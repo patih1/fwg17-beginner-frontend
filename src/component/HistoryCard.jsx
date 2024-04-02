@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import * as Ic from "react-feather"
 
+// eslint-disable-next-line react/prop-types
 const HistoryCard = ({no, total=100, tax, status, to}) => {
   let price = total
   if(tax){
@@ -24,7 +25,7 @@ const HistoryCard = ({no, total=100, tax, status, to}) => {
         
         <div className="flex flex-col gap-1 py-2">
           <p className="flex items-center gap-1"><Ic.Coffee className="h-4"></Ic.Coffee>Total</p>
-          <p className="font-semibold">IDR{price.toLocaleString('id')}</p>
+          <p className="font-semibold">IDR{price?.toLocaleString('id')}</p>
         </div>
         
         <div className="flex flex-col gap-1 py-2">

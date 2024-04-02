@@ -31,6 +31,7 @@ const CheckoutProduct = () => {
     event.preventDefault()
     const {value: newEmail} = event.target.email
     const {value : newFullName} = event.target.fullName
+    const {value : address} = event.target.address
     if(newEmail){
       setEmail(newEmail)
     }
@@ -40,22 +41,27 @@ const CheckoutProduct = () => {
 
     
     try{
+      const order = {
+        fullName,
+        email,
+        address,
+        detail: data
+      }
 
-      const form = new URLSearchParams()
-      form.append('fullName', fullName)
-      form.append('email', email)
+      // const form = new URLSearchParams()
+      // form.append('fullName', fullName)
+      // form.append('email', email)
       
-      form.append('productId', data[0].productId)
-      form.append('productSizeId', data[0].sizeId)
-      form.append('productVariantId', data[0].variantId)
-      form.append('quantity', data[0].quantity)
+      // form.append('productId', data[0].productId)
+      // form.append('productSizeId', data[0].sizeId)
+      // form.append('productVariantId', data[0].variantId)
+      // form.append('quantity', data[0].quantity)
       
 
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, form , {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, order , {
         headers : {
-          // 'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
-        }
+        },
       })
       
       navigate('/history-order')

@@ -15,12 +15,14 @@ const Products = ()=>{
   const [keyword, setKeyword] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
   const [category, setCategory] = useState([])
+  const [choosedCategory, setChoosedCategory] = useState([])
   const [page, setPage] = useState()
 
   const filterProduct = (event) =>{
     event.preventDefault()
     const {value: search} = event.target.search
     setKeyword(search)
+    setCategory(choosedCategory)
   }
 
   // const getProductBySearchParams = async (search) => {
@@ -86,11 +88,11 @@ const Products = ()=>{
   }, [keyword, page, category])
 
   const getCategory = (str) => {
-    if(category.includes(str)){
-      const result = category.filter((x)=>x != str)
-      setCategory([result])
+    if(choosedCategory.includes(str)){
+      const result = choosedCategory.filter((x)=>x != str)
+      setChoosedCategory([result])
     }else{
-      setCategory([...category,str])
+      setChoosedCategory([...choosedCategory,str])
     }
   }
 
@@ -186,10 +188,6 @@ const Products = ()=>{
                   <input defaultValue={searchParams.get('search')} type="text" name="search" id="search" placeholder="Search Your Product" className="h-10 pl-4 text-black -mt-7"/>
                   <p>Category</p>
                   <div className="flex gap-4">
-                    <input type="checkbox" name="fav-product" id="fav-product"/>
-                    <label htmlFor="fav-product">Favorite Product</label>
-                  </div>
-                  <div className="flex gap-4">
                     <input type="checkbox" name="coffee" id="coffee"/>
                     <label onClick={()=>{getCategory('coffee')}} htmlFor="coffee">Coffee</label>
                   </div>
@@ -200,10 +198,6 @@ const Products = ()=>{
                   <div className="flex gap-4">
                     <input type="checkbox" name="foods" id="foods"/>
                     <label onClick={()=>{getCategory('food')}} htmlFor="foods">Foods</label>
-                  </div>
-                  <div className="flex gap-4">
-                    <input type="checkbox" name="add-on" id="add-on"/>
-                    <label htmlFor="add-on">Add-On</label>
                   </div>
   
                   <p>Sort By</p>

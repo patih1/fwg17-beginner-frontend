@@ -42,6 +42,7 @@ const DetailOrder = () => {
         }
       }).then(({data})=>{
        setOrderDetail(data.results)
+       console.log(data.results)
         
       }).catch((err)=>{console.log(err)})
     }
@@ -130,6 +131,8 @@ const DetailOrder = () => {
               size={item.size}
               quantity={item.quantity}
               price={item.subTotal}
+              name={item.name}
+              image={item.image}
               />
             ))} 
             
