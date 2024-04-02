@@ -6,7 +6,6 @@ import Footer from '../component/Footer';
 import ProductCard from '../component/ProductCard';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import PaginationButton from '../component/PaginationButton';
 import { useSearchParams } from 'react-router-dom';
 
 const Products = ()=>{
@@ -15,97 +14,85 @@ const Products = ()=>{
   const [pageInfo, setPageInfo] = useState(null)
   const [keyword, setKeyword] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
-  
-  const getProducts = async (page) =>{
+  const [category, setCategory] = useState([])
+  const [page, setPage] = useState()
+
+  const filterProduct = (event) =>{
+    event.preventDefault()
+    const {value: search} = event.target.search
+    setKeyword(search)
+  }
+
+  // const getProductBySearchParams = async (search) => {
+  //   const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
+  //       search: search
+  //     }})
+      
+  //   setProducts(res.data.results)
+  // }
+
+  useEffect(()=>{
+  const getProducts = async () =>{
     let res
-    if(page === 'next'){
+    if(page === 'next' || page === 'next2'){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: pageInfo.nextPage,
-        search: keyword
+        search: keyword,
+        filter: category?.toString()
       }})
     }else if(page === `1`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 1,
-        search: keyword
+        search: keyword,
+        filter: category?.toString()
       }})
     }else if(page === `2`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 2,
-        search: keyword
+        search: keyword,
+        filter: category?.toString()
       }})
     }else if(page === `3`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 3,
-        search: keyword
+        search: keyword,
+        filter: category?.toString()
       }})
     }else if(page === `4`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 4,
-        search: keyword
+        search: keyword,
+        filter: category?.toString()
       }})
     }else{
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         itemLimit: 6,
-        search: keyword
+        search: keyword,
+        filter: category?.toString()
       }})
     }
     
     setPageInfo(res.data.pageInfo)
     setProducts(res.data.results)
   }
+  getProducts()
 
-  const pageLength = pageInfo?.totalPage // total page
-  const currentPage = pageInfo?.currentPage
+    // const value = searchParams.get('search')
+    // if(value){
+    //   getProductBySearchParams(value)
+    // }else{
+    //   getProducts()
+    // }
+  }, [keyword, page, category])
 
-
-  
-    const pages = () => {
-      return <>
-        <button type='button' onClick={()=>getProducts()} className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
-      </>
-    }
-
-  const filter = async (event) =>{
-    
-    event.preventDefault()
-    const {value: search} = event.target.search
-    console.log(search)
-
-    setKeyword(search)
-
-    try{
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
-        search: search
-      }})
-
-      
-    setProducts(res.data.results)
-    setSearchParams({
-      search: search
-    })
-
-    }catch(err){
-      console.log(err.response.data.message)
-    }
-  }
-
-  const getProductBySearchParams = async (search) => {
-    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
-        search: search
-      }})
-      
-    setProducts(res.data.results)
-  }
-
-  useEffect(()=>{
-    const value = searchParams.get('search')
-    if(value){
-      getProductBySearchParams(value)
+  const getCategory = (str) => {
+    if(category.includes(str)){
+      const result = category.filter((x)=>x != str)
+      setCategory([result])
     }else{
-      getProducts()
+      setCategory([...category,str])
     }
-    filter()
-  }, [searchParams])
+  }
 
   return(
     <>
@@ -187,7 +174,7 @@ const Products = ()=>{
   
         <aside className="flex flex-col w-5/6 gap-4 mb-16 text-white md:w-1/3 md:justify-end md:static md:items-end">
           <button onClick={()=>setShowFilter(!showFilter)} className="md:hidden bg-[#FF8906] flex justify-center h-12 items-center rounded"><Ic.Filter/></button>
-          <form onSubmit={filter} id="filter" className={`${!showFilter ? 'hidden' : ''} flex flex-col w-full gap-4 p-6 bg-black md:w-2/3 rounded-xl md:block md:h-auto`}>
+          <form onSubmit={filterProduct} id="filter" className={`${!showFilter ? 'hidden' : ''} flex flex-col w-full gap-4 p-6 bg-black md:w-2/3 rounded-xl md:block md:h-auto`}>
   
                 <div className="flex flex-wrap justify-between w-full gap-0 md:gap-0">
                   <p>Filter</p>
@@ -204,15 +191,15 @@ const Products = ()=>{
                   </div>
                   <div className="flex gap-4">
                     <input type="checkbox" name="coffee" id="coffee"/>
-                    <label htmlFor="coffee">Coffee</label>
+                    <label onClick={()=>{getCategory('coffee')}} htmlFor="coffee">Coffee</label>
                   </div>
                   <div className="flex gap-4">
                     <input type="checkbox" name="non-coffee" id="non-coffee"/>
-                    <label htmlFor="non-coffee">Non Coffee</label>
+                    <label onClick={()=>{getCategory('non coffee')}} htmlFor="non-coffee">Non Coffee</label>
                   </div>
                   <div className="flex gap-4">
                     <input type="checkbox" name="foods" id="foods"/>
-                    <label htmlFor="foods">Foods</label>
+                    <label onClick={()=>{getCategory('food')}} htmlFor="foods">Foods</label>
                   </div>
                   <div className="flex gap-4">
                     <input type="checkbox" name="add-on" id="add-on"/>
@@ -267,11 +254,11 @@ const Products = ()=>{
    
             <div className="flex justify-center w-full gap-3">
               {/* <PaginationButton num={currentPage} limit={pageLength}/> */}
-              <button type='button' onClick={()=>getProducts('1')} className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
-              <button type='button' onClick={()=>getProducts('2')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">2</button>
-              <button type='button' onClick={()=>getProducts('3')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">3</button>
-              <button type='button' onClick={()=>getProducts('4')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">4</button>
-              <button type='button' onClick={()=>getProducts('next')} className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
+              <button type='button' onClick={()=>setPage('1')} className="w-10 h-10 bg-[#FF8906] rounded-full">1</button>
+              <button type='button' onClick={()=>setPage('2')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">2</button>
+              <button type='button' onClick={()=>setPage('3')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">3</button>
+              <button type='button' onClick={()=>setPage('4')} className="w-10 h-10 bg-[#F8F8F8] rounded-full">4</button>
+              <button type='button' onClick={()=>{page == 'next2' ? setPage('next') : setPage('next2')}} className="w-10 h-10 bg-[#FF8906] rounded-full flex justify-center items-center"><Ic.ArrowRight className="text-white"></Ic.ArrowRight></button>
             </div>
       
           </div>
