@@ -1,6 +1,5 @@
 // eslint-disable-next-line react/prop-types
 const OrderDetail = ({quantity, size, variant, price=10, name, image }) => {
-  console.log(image)
   return(
     <div className="flex w-full gap-3 p-3 md:h-44 h-28 bg-slate-100">
               

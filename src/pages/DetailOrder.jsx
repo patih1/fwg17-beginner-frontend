@@ -28,6 +28,7 @@ const DetailOrder = () => {
           }
         })
         setOrder(data.results)
+        console.log(data.results)
 
       }catch(err){
         console.log(err)
@@ -42,15 +43,14 @@ const DetailOrder = () => {
         }
       }).then(({data})=>{
        setOrderDetail(data.results)
-       console.log(data.results)
         
       }).catch((err)=>{console.log(err)})
     }
   },[id, token])
 
-  const debug = () => {
-    console.log(id)
-  }
+  // const debug = () => {
+  //   console.log(id)
+  // }
 
   return(
     <>
@@ -110,7 +110,7 @@ const DetailOrder = () => {
             <hr/>
             <div className="flex justify-between">
               <p>Total Transaksi</p>
-              <p className="font-semibold text-[#FF8906]">IDR{order?.total?.toLocaleString('id')}</p>
+              <p className="font-semibold text-[#FF8906]">IDR{(order?.total + order?.taxAmount)?.toLocaleString('id')}</p>
             </div>
           </div>
         </div>

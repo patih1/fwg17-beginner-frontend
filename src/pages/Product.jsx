@@ -188,38 +188,38 @@ const Products = ()=>{
                   <label htmlFor="search">Search</label>
                   <input defaultValue={searchParams.get('search')} type="text" name="search" id="search" placeholder="Search Your Product" className="h-10 pl-4 text-black -mt-7"/>
                   <p>Category</p>
-                  <div className="flex gap-4">
+                  <label onClick={()=>{getCategory('coffee')}} htmlFor="coffee" className="flex gap-4">
                     <input type="checkbox" name="coffee" id="coffee"/>
-                    <label onClick={()=>{getCategory('coffee')}} htmlFor="coffee">Coffee</label>
-                  </div>
-                  <div className="flex gap-4">
+                    <div>Coffee</div>
+                  </label>
+                  <label onClick={()=>{getCategory('non coffee')}} htmlFor="non-coffee" className="flex gap-4">
                     <input type="checkbox" name="non-coffee" id="non-coffee"/>
-                    <label onClick={()=>{getCategory('non coffee')}} htmlFor="non-coffee">Non Coffee</label>
-                  </div>
-                  <div className="flex gap-4">
+                    <div>Non Coffee</div>
+                  </label>
+                  <label onClick={()=>{getCategory('food')}} htmlFor="foods" className="flex gap-4">
                     <input type="checkbox" name="foods" id="foods"/>
-                    <label onClick={()=>{getCategory('food')}} htmlFor="foods">Foods</label>
-                  </div>
+                    <div>Foods</div>
+                  </label>
   
                   <p>Sort By</p>
                   <div className="flex gap-4">
-                    <input type="checkbox" name="b1-g1" id="b1-g1"/>
+                    <input type="radio" name="sortBy" id="b1-g1"/>
                     <label htmlFor="b1-g1">Buy 1 get 1</label>
                   </div>
                   <div className="flex gap-4">
-                    <input type="checkbox" name="flash-sale" id="flash-sale"/>
+                    <input type="radio" name="sortBy" id="flash-sale"/>
                     <label htmlFor="flash-sale">Flash sale</label>
                   </div>
                   <div className="flex gap-4">
-                    <input type="checkbox" name="birth-pkg" id="birth-pkg"/>
+                    <input type="radio" name="sortBy" id="birth-pkg"/>
                     <label htmlFor="birth-pkg">Birthday Package</label>
                   </div>
                   <div className="flex gap-4">
-                    <input type="checkbox" name="cheap" id="cheap"/>
+                    <input type="radio" name="sortBy" id="cheap"/>
                     <label htmlFor="cheap">Cheap</label>
                   </div>
                   <label htmlFor="range-price">Range Price</label>
-                  <input type="range" name="range-price" id="range-price"/>
+                  <input min={0} max={1000000} type="range" name="range-price" id="range-price"/>
                   <button className="w-full bg-[#FF8906] h-9" type="submit">Apply FIlter</button>
                 </div>
   
