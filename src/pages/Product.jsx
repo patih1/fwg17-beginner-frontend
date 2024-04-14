@@ -17,13 +17,18 @@ const Products = ()=>{
   const [category, setCategory] = useState([])
   const [choosedCategory, setChoosedCategory] = useState([])
   const [page, setPage] = useState()
+  const [sortBy, setSortBy] = useState()
 
   const filterProduct = (event) =>{
     event.preventDefault()
     const {value: search} = event.target.search
+    const {value: sortBy} = event.target.sortBy
+
+
+    setSortBy(sortBy)
     setKeyword(search)
-    console.log(choosedCategory)
     setCategory(choosedCategory)
+    // console.log(category)
   }
 
   // const getProductBySearchParams = async (search) => {
@@ -41,37 +46,43 @@ const Products = ()=>{
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: pageInfo.nextPage,
         search: keyword,
-        filter: category?.toString()
+        filter: category?.toString(),
+        sortBy
       }})
     }else if(page === `1`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 1,
         search: keyword,
-        filter: category?.toString()
+        filter: category?.toString(),
+        sortBy
       }})
     }else if(page === `2`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 2,
         search: keyword,
-        filter: category?.toString()
+        filter: category?.toString(),
+        sortBy
       }})
     }else if(page === `3`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 3,
         search: keyword,
-        filter: category?.toString()
+        filter: category?.toString(),
+        sortBy
       }})
     }else if(page === `4`){
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         page: 4,
         search: keyword,
-        filter: category?.toString()
+        filter: category?.toString(),
+        sortBy
       }})
     }else{
       res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
         itemLimit: 6,
         search: keyword,
-        filter: category?.toString()
+        filter: category?.toString(),
+        sortBy
       }})
     }
     
@@ -79,14 +90,7 @@ const Products = ()=>{
     setProducts(res.data.results)
   }
   getProducts()
-
-    // const value = searchParams.get('search')
-    // if(value){
-    //   getProductBySearchParams(value)
-    // }else{
-    //   getProducts()
-    // }
-  }, [keyword, page, category])
+  }, [keyword, page, category, sortBy])
 
   const getCategory = (str) => {
     if(choosedCategory.includes(str)){
@@ -181,42 +185,38 @@ const Products = ()=>{
   
                 <div className="flex flex-wrap justify-between w-full gap-0 md:gap-0">
                   <p>Filter</p>
-                  <button type="reset">Reset Filter</button>
+                  <button type="reset" onClick={()=>setChoosedCategory([])}>Reset Filter</button>
                 </div>
   
                 <div action="" className="flex flex-col w-full gap-8">
                   <label htmlFor="search">Search</label>
                   <input defaultValue={searchParams.get('search')} type="text" name="search" id="search" placeholder="Search Your Product" className="h-10 pl-4 text-black -mt-7"/>
                   <p>Category</p>
-                  <label onClick={()=>{getCategory('coffee')}} htmlFor="coffee" className="flex gap-4">
+                  <div  className="relative flex gap-4">
                     <input type="checkbox" name="coffee" id="coffee"/>
-                    <div>Coffee</div>
-                  </label>
-                  <label onClick={()=>{getCategory('non coffee')}} htmlFor="non-coffee" className="flex gap-4">
+                    <label onClick={()=>{getCategory('coffee')}} htmlFor="coffee" className='absolute pl-10 -top-[5px]'>Coffee</label>
+                  </div>
+                  <div className="relative flex gap-4">
                     <input type="checkbox" name="non-coffee" id="non-coffee"/>
-                    <div>Non Coffee</div>
-                  </label>
-                  <label onClick={()=>{getCategory('food')}} htmlFor="foods" className="flex gap-4">
+                    <label onClick={()=>{getCategory('non coffee')}} htmlFor="non-coffee" className='absolute pl-10 -top-[5px]'>Non Coffee</label>
+                  </div>
+                  <div className="relative flex gap-4">
                     <input type="checkbox" name="foods" id="foods"/>
-                    <div>Foods</div>
-                  </label>
+                    <label onClick={()=>{getCategory('food')}} htmlFor="foods" className='absolute pl-10 -top-[5px]'>Foods</label>
+                  </div>
   
                   <p>Sort By</p>
                   <div className="flex gap-4">
-                    <input type="radio" name="sortBy" id="b1-g1"/>
-                    <label htmlFor="b1-g1">Buy 1 get 1</label>
+                    <input type="radio" name="sortBy" id="name" value='name'/>
+                    <label htmlFor="name">Name</label>
                   </div>
                   <div className="flex gap-4">
-                    <input type="radio" name="sortBy" id="flash-sale"/>
-                    <label htmlFor="flash-sale">Flash sale</label>
+                    <input type="radio" name="sortBy" id="new" value='createdAt'/>
+                    <label htmlFor="new">Newest Product</label>
                   </div>
                   <div className="flex gap-4">
-                    <input type="radio" name="sortBy" id="birth-pkg"/>
-                    <label htmlFor="birth-pkg">Birthday Package</label>
-                  </div>
-                  <div className="flex gap-4">
-                    <input type="radio" name="sortBy" id="cheap"/>
-                    <label htmlFor="cheap">Cheap</label>
+                    <input type="radio" name="sortBy" id="cheap" value='basePrice'/>
+                    <label htmlFor="cheap">Cheapest</label>
                   </div>
                   <label htmlFor="range-price">Range Price</label>
                   <input min={0} max={1000000} type="range" name="range-price" id="range-price"/>

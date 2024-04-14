@@ -47,9 +47,10 @@ const Navbar = () =>{
       <div className="flex flex-col items-center justify-start flex-1 md:justify-end md:mx-20 gap-9 md:flex-row">
         <div className="flex flex-col-reverse gap-14 md:flex-row">
           <Ic.Search className=""></Ic.Search>
-          <div className="flex gap-10">
-            <Link className='relative' to='/checkout-product'>{data.length > 0 ? <div className='font-bold absolute px-1 text-[10px] bg-red-600 rounded-full -right-3 -top-2'>{data?.length}</div> : ''}<Ic.ShoppingCart/></Link>
-            <button onClick={()=>setShowMenu(!showMenu)}><Ic.Menu className="md:hidden"></Ic.Menu></button>
+          <Link className={`relative`} to='/checkout-product'>{data.length > 0 ? <div className='font-bold absolute px-1 text-[10px] bg-red-600 rounded-full -right-3 -top-2'>{data?.length}</div> : ''}<Ic.ShoppingCart/></Link>
+          <Link className={`${token ? '' : 'hidden'}`} to='/history-order'><Ic.Archive/></Link>
+          <div className="flex items-center gap-10 mt-1">
+            <button onClick={()=>setShowMenu(!showMenu)}><Ic.Menu className="ml-20 md:hidden"></Ic.Menu></button>
           </div>
         </div>
         {!token && <>

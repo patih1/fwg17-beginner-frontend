@@ -15,6 +15,8 @@ import { useSelector } from 'react-redux';
 const HistoryOrder = () => {
   const [order, setOrder] = useState()
   const token = useSelector(state => state.auth.token)
+  const [historyFilter, setHistoryFilter] = useState('')
+  const [filterClass, setFilterClass] = useState({})
   // const user = useSelector(state => state.profile.data)
 
   useEffect(()=>{
@@ -22,13 +24,39 @@ const HistoryOrder = () => {
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, {
         headers : {
           'Authorization' : `Bearer ${token}`
+        },
+        params : {
+          filter: historyFilter
         }
       }).then(({data})=>{
        setOrder(data.results)
         
-      }).catch((err)=>{console.log(err)})
+      }).catch((err)=>{
+        // console.log(err)
+        setOrder([])
+      })
     }
-  },[token])
+  },[token, historyFilter])
+
+  const processFilter = (str) =>{
+    setHistoryFilter(str)
+    let filterClassName = {
+      onProgress : false,
+      readyToPick : false,
+      delivered : false,
+      canceled : false
+    }
+    if(str == 'on-progress'){
+      filterClassName.onProgress = true
+    }else if(str == 'ready-to-pick'){
+      filterClassName.readyToPick = true
+    }else if(str == 'delivered'){
+      filterClassName.delivered = true
+    }else if(str == 'canceled'){
+      filterClassName.canceled = true
+    }
+    setFilterClass(filterClassName)
+  }
 
   const debug = () =>{
     console.log(order)
@@ -46,24 +74,27 @@ const HistoryOrder = () => {
       </div>
       </header>
   
-      <section className="flex flex-col gap-3 md:flex-row">
+      <section className="flex flex-col gap-3 lg:flex-row">
       <div className="flex flex-1 md:justify-end">
         <div className="flex flex-col gap-5 md:w-4/5">
     
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5 p-2 bg-slate-100">
-              <div className="p-2 bg-white">
-                <p>On Progress</p>
+              <div id='on-progress' className={filterClass?.onProgress ? 'p-2 bg-white' : ''}>
+                <button onClick={()=>{processFilter('on-progress')}}>On Progress</button>
               </div>
-              <div>
-                <p>Sending Goods</p>
+              <div id='ready-to-pick' className={filterClass?.readyToPick ? 'p-2 bg-white' : ''}>
+                <button onClick={()=>{processFilter('ready-to-pick')}}>Ready to Pick</button>
               </div>
-              <div>
-                <p>Finish Order</p>
+              <div id='delivered' className={filterClass?.delivered ? 'p-2 bg-white' : ''}>
+                <button onClick={()=>{processFilter('delivered')}}>Delivered</button>
+              </div>
+              <div id='canceled' className={filterClass?.canceled ? 'p-2 bg-white' : ''}>
+                <button onClick={()=>{processFilter('canceled')}}>Canceled</button>
               </div>
             </div>
             <div className="flex items-center p-4 bg-slate-100">
-              <div className="flex items-center">
+              <div className="flex items-center gap-3">
                 <Ic.Calendar></Ic.Calendar>
                 <p>January 2023</p>
                 <Ic.ChevronDown></Ic.ChevronDown>
@@ -98,7 +129,7 @@ const HistoryOrder = () => {
   
       </div>
       
-      <div className="flex-1">
+      <div className="w-[600px]">
   
         <div className="flex flex-col gap-4 p-4 shadow-md md:w-3/5">
           <div className="flex items-center justify-center w-12 h-12 bg-black rounded-2xl">

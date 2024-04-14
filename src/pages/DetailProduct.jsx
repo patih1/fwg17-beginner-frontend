@@ -92,7 +92,7 @@ const DetailProduct = () => {
     
     useEffect(() => {
       getProduct()
-    },[product])
+    },[products, id])
   
     useEffect(() => {
       getProducts()
