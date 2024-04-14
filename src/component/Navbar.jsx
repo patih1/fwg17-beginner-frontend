@@ -1,7 +1,7 @@
 import * as Ic from 'react-feather';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icon/Logo.svg'
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/reducer/auth';
@@ -9,7 +9,7 @@ import { setProfile } from '../redux/reducer/profile';
 
 const Navbar = () =>{
   const navigate = useNavigate()
-  const [showMenu, setShowMenu] = React.useState(false)
+  const [showMenu, setShowMenu] = useState(false)
   const data = useSelector(state => state.product.data)
   const user = useSelector(state => state.profile.data)
   const token = useSelector(state => state.auth.token)
@@ -46,7 +46,6 @@ const Navbar = () =>{
   
       <div className="flex flex-col items-center justify-start flex-1 md:justify-end md:mx-20 gap-9 md:flex-row">
         <div className="flex flex-col-reverse gap-14 md:flex-row">
-          <Ic.Search className=""></Ic.Search>
           <Link className={`relative`} to='/checkout-product'>{data.length > 0 ? <div className='font-bold absolute px-1 text-[10px] bg-red-600 rounded-full -right-3 -top-2'>{data?.length}</div> : ''}<Ic.ShoppingCart/></Link>
           <Link className={`${token ? '' : 'hidden'}`} to='/history-order'><Ic.Archive/></Link>
           <div className="flex items-center gap-10 mt-1">
