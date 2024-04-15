@@ -4,7 +4,7 @@ import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import PaymentDetail from '../component/PaymentDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { setProduct } from '../redux/reducer/product';
 // import Item1 from '../assets/img/card1.png';
@@ -68,6 +68,10 @@ const CheckoutProduct = () => {
       alert(err.response.data.message)
     }
   }
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  },[])
 
   return(
     <>

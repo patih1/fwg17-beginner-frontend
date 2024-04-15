@@ -11,15 +11,18 @@ import UserImg from "../assets/img/user.png"
 // import { Link } from 'react-router-dom';
 
 const Home = () => {
-
+  const [loading, setLoading] = useState(false)
   const [products, setProducts] = useState()
+  
   const getProduct = async () => {
+    setLoading(true)
     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
       itemLimit: 4,
       recommended: true
     }}) 
-    
+
     setProducts(res.data.results)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -39,6 +42,10 @@ const Home = () => {
       desc: 'Free member card with a minimum purchase of IDR 200.000.'
     }
   ])
+
+  // useEffect(() => {
+  //   window.scrollTo(0, 0)
+  // },[])
 
   return (
     <>
@@ -143,7 +150,11 @@ const Home = () => {
           <p className="text-center text-slate-500">Let’s choose and have Link bit taste of poeple’s favorite. It might be yours too!</p>
         </div>
 
-        <div className="flex flex-col items-center justify-between w-4/5 h-auto gap-52 md:flex-row md:gap-0">
+        {loading ? <div className='flex items-center justify-center w-full h-full text-[#FF8906]'>
+          <span className='w-16 loading loading-spinner'></span>
+        </div> : ''}
+
+        {loading ? '' : <div className="flex flex-col items-center justify-between w-4/5 h-auto gap-52 md:flex-row md:gap-0">
     
           {products && products.map((item) => (
             <ProductCard
@@ -159,7 +170,8 @@ const Home = () => {
             />
           ))}
 
-        </div>
+        </div>}
+        
       </section>
 
       <section className="flex flex-col md:h-[115vh] h-[50vh] mt-28 items-center mb-5">

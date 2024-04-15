@@ -18,6 +18,10 @@ const DetailProduct = () => {
   const [sizeId, setSizeId] = useState(1)
   const [variantId, setVariantId] = useState(2) 
   const [quantity, setQuantity] = useState(1)
+  const [product, setProduct] = useState()
+  const [variantPrice, setVariantPrice] = useState()
+  const [sizePrice, setSizePrice] = useState()
+  const [products, setProducts] = useState()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -63,7 +67,6 @@ const DetailProduct = () => {
     navigate('/checkout-product')
   }
   
-  const [products, setProducts] = useState()
   const getProducts = async () =>{
     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products`, {params: {
       itemLimit: 3
@@ -72,9 +75,6 @@ const DetailProduct = () => {
     setProducts(res.data.results)
   }
 
-  const [product, setProduct] = useState()
-  const [variantPrice, setVariantPrice] = useState()
-  const [sizePrice, setSizePrice] = useState()
   const getProduct = async () =>{
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`) 
       const res2 = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/productVariant/${variantId}`) 
@@ -92,6 +92,10 @@ const DetailProduct = () => {
     
     useEffect(() => {
       getProduct()
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
     },[products, id])
   
     useEffect(() => {
