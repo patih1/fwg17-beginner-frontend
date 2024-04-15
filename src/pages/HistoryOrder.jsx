@@ -34,12 +34,12 @@ const HistoryOrder = () => {
       }).then(({data})=>{
        setOrder(data.results)
        setTotalData(data.pageInfo.totalData)
+       setLoading(false)
         
       }).catch((err)=>{
         console.log(err)
         setOrder([])
       })
-      setLoading(false)
     }
   },[token, historyFilter])
 
