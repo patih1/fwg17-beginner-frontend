@@ -13,14 +13,18 @@ import { setProduct } from '../redux/reducer/product';
 // import Item4 from '../assets/img/card4.jpeg';
 
 const CheckoutProduct = () => {
-  const [where, setWhere] = useState(1)
   const data = useSelector(state => state.product.data)
   const user = useSelector(state => state.profile.data)
   const token = useSelector(state => state.auth.token)
   const navigate = useNavigate()
+
+  const [where, setWhere] = useState(1)
   const [email, setEmail] = useState(user.email)
   const [fullName, setFullName] = useState(user.fullName)
-  // const dispatch = useDispatch()
+  const [CheckoutLoading, setCheckoutLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const [isError, setIsError] = useState(false)
+  const [checkoutButton, setCheckoutButton] = useState('')
 
   const order = data.reduce((acum, curr) => { return acum + curr.price - curr.discount; }, 0)
   const tax = order * 1/10
@@ -34,12 +38,18 @@ const CheckoutProduct = () => {
     if(newEmail){
       setEmail(newEmail)
     }
+
     if(newFullName){
       setFullName(newFullName)
     }
-
     
+    setCheckoutLoading(true)
+
     try{
+      if(data.length < 1){
+        throw Error('Your cart is empty')
+      }
+
       const order = {
         fullName,
         email,
@@ -47,25 +57,44 @@ const CheckoutProduct = () => {
         detail: data
       }
 
-      // const form = new URLSearchParams()
-      // form.append('fullName', fullName)
-      // form.append('email', email)
-      
-      // form.append('productId', data[0].productId)
-      // form.append('productSizeId', data[0].sizeId)
-      // form.append('productVariantId', data[0].variantId)
-      // form.append('quantity', data[0].quantity)
-      
-
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, order , {
+      const {data : checkout} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/customer/orders`, order , {
         headers : {
           'Authorization' : `Bearer ${token}`
         },
       })
       
-      navigate('/history-order')
+      setIsError(false)
+      setMessage(checkout.message)
+      setCheckoutButton('Order Success')
+      setCheckoutLoading(false)
+      setTimeout(() => {
+        setCheckoutButton('')
+        setMessage('')
+        navigate('/history-order')
+      }, 2000);
+
     }catch(err){
-      alert(err.response.data.message)
+      if(err.message === 'Your cart is empty'){
+        setCheckoutLoading(false)
+        setIsError(true)
+        setMessage(err.message)
+        setCheckoutButton('Order Failed')
+        setTimeout(() => {
+          setCheckoutButton('')
+          setMessage('')
+        }, 2000);
+        return 
+      }
+
+      
+      setCheckoutLoading(false)
+      setIsError(true)
+      setMessage(err.response.data.message)
+      setCheckoutButton('Order Failed')
+      setTimeout(() => {
+        setCheckoutButton('')
+        setMessage('')
+      }, 2000);
     }
   }
 
@@ -75,6 +104,8 @@ const CheckoutProduct = () => {
 
   return(
     <>
+       {message && <div className={`fixed left-[50%] -translate-x-[50%] rounded-lg p-2 top-24 ${isError ? 'bg-red-300 text-red-800' : 'bg-green-300 text-green-800'}`}>{message}</div>}
+
       <div className='bg-black'>
       <Navbar/>
       </div>
@@ -177,7 +208,7 @@ const CheckoutProduct = () => {
               <p>Sub Total</p>
               <p className="font-semibold">IDR{subTotal.toLocaleString('id')}</p>
             </div>
-            <button form='buy' type='submit' className="w-full bg-[#FF8906] h-8 rounded">Checkout</button>
+            <button form='buy' type='submit' className={`w-full h-8 rounded ${checkoutButton === 'Order Success' ? 'bg-green-400 text-green-800' : checkoutButton === 'Order Failed' ? 'bg-red-400 text-red-800' : 'bg-[#FF8906]'}`}>{CheckoutLoading ? <span className='w-5 text-white loading loading-bars'></span> : checkoutButton ? checkoutButton : 'Checkout'}</button>
             <p>We Accept</p>
             <div className="flex justify-between w-full">
               <img src="https://i0.wp.com/febi.uinsaid.ac.id/wp-content/uploads/2020/11/Logo-BRI-Bank-Rakyat-Indonesia-PNG-Terbaru.png?ssl=1" className="object-contain w-9 max-h-9"></img>

@@ -44,8 +44,8 @@ const Profile = () => {
         }})
       dispatch(setProfile(data.results))
 
-      setMessage(data.message)
       setIsError(false)
+      setMessage(data.message)
       setLoading(false)
       setTimeout(() => {
         setMessage('')
@@ -54,8 +54,8 @@ const Profile = () => {
     }catch(err){
       setLoading(false)
 
-      setMessage(err.response.data.message)
       setIsError(true)
+      setMessage(err.response.data.message)
       setTimeout(() => {
         setMessage('')
       }, 2000);
@@ -101,8 +101,8 @@ const Profile = () => {
         setPreview(null)
         setPfpLoading(false)
 
-        setMessage(data.message)
         setIsError(false)
+        setMessage(data.message)
         setTimeout(() => {
           setMessage('')
         }, 2000);
@@ -110,8 +110,8 @@ const Profile = () => {
     }catch(err){
       setPfpLoading(false)
 
-      setMessage(err.response.data.message)
       setIsError(true)
+      setMessage(err.response.data.message)
       setTimeout(() => {
         setMessage('')
       }, 2000);

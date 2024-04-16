@@ -188,14 +188,12 @@ const Products = ()=>{
     
 
 
-          {loading ? <div className='flex items-center justify-center w-full h-[80vh]'>
+          <div className={`${loading ? '' : 'hidden'} flex items-center justify-center w-full h-[80vh]`}>
             <span className="text-[#FF8906] loading loading-spinner w-16"></span>
-          </div> : ''}
+          </div>
     
-          {loading ? '' : 
-          
-          <>
-            <aside className="flex flex-col w-5/6 gap-4 mb-16 text-white md:w-1/3 md:justify-end md:static md:items-end">
+
+            <aside className={`${loading ? 'hidden' : ''} flex flex-col w-5/6 gap-4 mb-16 text-white md:w-1/3 md:justify-end md:static md:items-end`}>
               <button onClick={()=>setShowFilter(!showFilter)} className="md:hidden bg-[#FF8906] flex justify-center h-12 items-center rounded"><Ic.Filter/></button>
               <form onSubmit={filterProduct} id="filter" className={`${!showFilter ? 'hidden' : ''} flex flex-col w-full gap-4 p-6 bg-black md:w-2/3 rounded-xl md:block md:h-auto`}>
   
@@ -242,7 +240,7 @@ const Products = ()=>{
               </form>
             </aside>
 
-            <div className="w-full md:w-2/3">
+            <div className={`${loading ? 'hidden' : ''} w-full md:w-2/3`}>
       
               <div className="flex flex-col justify-between w-10/12 h-auto ml-6 gap-52 md:gap-72">
       
@@ -274,9 +272,6 @@ const Products = ()=>{
               </div>
                   
             </div>
-          </>
-          
-          }
                 
         </div>
       </section>
