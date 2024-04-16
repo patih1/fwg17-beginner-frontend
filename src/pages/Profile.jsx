@@ -13,17 +13,20 @@ import { setProfile } from "../redux/reducer/profile";
 // import Item4 from '../assets/img/card4.jpeg';
 
 const Profile = () => {
-  // const [user, setUser] = useState({})
   const user = useSelector(state => state.profile.data)
   const token = useSelector(state => state.auth.token)
-  // const token = window.localStorage.getItem('token')
   const [preview, setPreview] = useState()
+  const [message, setMessage] = useState('')
+  const [isError, setIsError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [pfpLoading, setPfpLoading] = useState(false)
   const dispatch = useDispatch()
 
   const updateProfileData = async (e) =>{
     if(e){
       e.preventDefault()
     }
+    setLoading(true)
     try{
       const form = new FormData()
       const fields = ['fullName', 'email', 'address', 'phoneNumber', 'password']
@@ -39,17 +42,36 @@ const Profile = () => {
           'Content-Type' : 'multipart/form-data',
           'Authorization' : `Bearer ${token}`
         }})
-          dispatch(setProfile(data.results))
-      
+      dispatch(setProfile(data.results))
+
+      setMessage(data.message)
+      setIsError(false)
+      setLoading(false)
+      setTimeout(() => {
+        setMessage('')
+      }, 2000);
+
     }catch(err){
-      ''
+      setLoading(false)
+
+      setMessage(err.response.data.message)
+      setIsError(true)
+      setTimeout(() => {
+        setMessage('')
+      }, 2000);
+      
     }
   }
   
   useEffect(() => {
     updateProfileData().then(({data})=>{
+      setLoading(true)
       dispatch(setProfile(data.results))
-    }).catch((err)=>{console.log(err)})
+      setLoading(false)
+    }).catch((err)=>{
+      console.log(err)
+      setLoading(false)
+    })
   },[])
 
   const changePicture = (e) =>{
@@ -62,6 +84,7 @@ const Profile = () => {
       e.preventDefault()
 
     }
+    setPfpLoading(true)
     try{
       const [file] = e.target.picture.files
       console.log(file)
@@ -76,9 +99,23 @@ const Profile = () => {
         
         dispatch(setProfile(data.results))
         setPreview(null)
+        setPfpLoading(false)
+
+        setMessage(data.message)
+        setIsError(false)
+        setTimeout(() => {
+          setMessage('')
+        }, 2000);
       }
     }catch(err){
-      window.alert(err.response.data.message)
+      setPfpLoading(false)
+
+      setMessage(err.response.data.message)
+      setIsError(true)
+      setTimeout(() => {
+        setMessage('')
+      }, 2000);
+      
     }
   }
 
@@ -88,6 +125,8 @@ const Profile = () => {
 
   return(
     <>
+      {message && <div className={`fixed left-[50%] -translate-x-[50%] rounded-lg p-2 top-24 ${isError ? 'bg-red-300 text-red-800' : 'bg-green-300 text-green-800'}`}>{message}</div>}
+
       <div className='bg-black'>
       <Navbar/>
       </div>
@@ -103,8 +142,13 @@ const Profile = () => {
       <form onSubmit={uploadPhoto} className="flex flex-col items-center w-4/5 gap-4 p-6 border md:w-3/5 border-slate-300">
         <p className="text-2xl font-semibold text-center">{user?.fullName}</p>
         <p className="">{user?.email}</p>
+
         <label className="flex flex-col items-center w-full gap-5">
-          <img className="flex items-center object-cover overflow-hidden bg-black rounded-full w-28 h-28" src={preview ? preview : `${user?.picture}`} alt=""/>
+          {pfpLoading ? '' : <img className="flex items-center object-cover overflow-hidden bg-black rounded-full w-28 h-28" src={preview ? preview : `${user?.picture}`} alt=""/>}
+          {pfpLoading ? <div className="flex items-center justify-center object-cover overflow-hidden bg-white border-2 rounded-full w-28 h-28">
+            <span className="w-16 loading loading-spinner text-[#FF8906]"></span>
+          </div> : ''}
+
           <input multiple={false} onChange={changePicture} type="file" name="picture" id="picture" className="hidden"/>
           
           <label htmlFor="picture" className={`${preview ? 'hidden' : ''} bg-[#FF8906] w-full rounded h-10 flex items-center justify-center`}>Upload New Photo</label>
@@ -113,6 +157,7 @@ const Profile = () => {
             <button type="reset" onClick={()=>{setPreview()}} className={`bg-[#f05d5d] rounded h-10 flex items-center justify-center w-2/5`}><Ic.X/> Cancel</button>
           </div>
         </label>
+        
         <p>Since {user?.createdAt?.slice(0,-14)}</p>
       </form>
 
@@ -120,7 +165,11 @@ const Profile = () => {
     
     <div className="flex flex-col items-center justify-center w-full gap-4 md:flex-1 md:items-start">
       
-      <form onSubmit={updateProfileData} className="flex flex-col w-4/5 gap-4 p-6 border border-slate-300">
+      {loading ? <div className="flex flex-col w-4/5 gap-4 p-6 border border-slate-300 h-[480px] items-center justify-center">
+        <span className="loading loading-spinner w-16 text-[#FF8906]"></span>
+      </div> : ''}
+
+      {loading ? '' : <form onSubmit={updateProfileData} className="flex flex-col w-4/5 gap-4 p-6 border border-slate-300">
 
         <div className="flex flex-col">
           <label className="font-semibold" htmlFor="fullName">Full Name</label>
@@ -155,7 +204,7 @@ const Profile = () => {
         </div>
 
         
-      </form>
+      </form>}
       
     </div>
     

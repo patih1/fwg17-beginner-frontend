@@ -38,6 +38,7 @@ const HistoryOrder = () => {
         
       }).catch((err)=>{
         console.log(err)
+        setLoading(false)
         setOrder([])
       })
     }
